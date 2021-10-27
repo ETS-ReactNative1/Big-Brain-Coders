@@ -42,7 +42,7 @@
   },
   "scripts": {
     "start": "cross-env METEOR_NO_RELEASE_CHECK=1 meteor --settings ../config/settings.development.json",
-    "android": "cross-env METEOR_NO_RELEASE_CHECK=1 meteor run android-device --settings ../config/settings.development.json --mobile-server http://168.105.15.172:3000 --port 3000",
+    "android": "cross-env METEOR_NO_RELEASE_CHECK=1 meteor run android-device --settings ../config/settings.development.json --mobile-server http://192.168.0.160:3000 --port 3000",
     "lint": "eslint --quiet --ext .jsx --ext .js ./imports",
     "pretest": "npm run lint",
     "test": "cross-env METEOR_NO_RELEASE_CHECK=1 TEST_BROWSER_DRIVER=puppeteer meteor test --once --driver-package meteortesting:mocha --port 3100",
