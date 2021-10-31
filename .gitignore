@@ -1,5 +1,6 @@
 *.iml
 .idea
 .DS_Store
-settings.production.json
+config/settings.production.json
 app/node_modules/
+config/settings.development.json
