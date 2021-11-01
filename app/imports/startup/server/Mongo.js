@@ -26,6 +26,6 @@ if (Stuffs.count() === 0) {
 if (Reports.count() === 0) {
   if (Meteor.settings.defaultReports) {
     console.log('Creating default reports.');
-    Meteor.settings.defaultData.map(data => addReports(data));
+    Meteor.settings.defaultReports.map(data => addReports(data));
   }
 }
