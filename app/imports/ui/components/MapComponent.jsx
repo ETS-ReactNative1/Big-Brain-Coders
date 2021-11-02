@@ -1,14 +1,20 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import GoogleMapReact from 'google-map-react';
+import PropTypes from 'prop-types';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Stuffs } from '../../api/stuff/StuffCollection';
+import StuffItem from './StuffItem';
+import { Reports } from '../../api/report/ReportCollection';
+import Pins from './Pins';
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 class MapComponent extends React.Component {
   static defaultProps = {
     center: {
-      lat: 59.95,
-      lng: 30.33,
+      lat: 21.330970673074834,
+      lng: -157.69216914705936,
     },
     zoom: 11,
   };
@@ -23,15 +29,29 @@ class MapComponent extends React.Component {
               defaultCenter={this.props.center}
               defaultZoom={this.props.zoom}
           >
-            <AnyReactComponent
-                lat={59.955413}
-                lng={30.337844}
-                text={"hello"}
-            />
+            {this.props.reports.map((reports) => <Pins key={reports._id} reports={reports} />)}
+            {/*<AnyReactComponent*/}
+            {/*    lat={21.330970673074834}*/}
+            {/*    lng={-157.69216914705936}*/}
+            {/*    text="My Marker"*/}
+            {/*/>*/}
           </GoogleMapReact>
         </div>
     );
   }
 }
 
-export default MapComponent;
+MapComponent.propTypes = {
+  reports: PropTypes.array.isRequired,
+  ready: PropTypes.bool.isRequired,
+};
+
+/** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
+export default withTracker(() => {
+  // Get access to Stuff documents.
+  const subscription = Reports.subscribeReport();
+  return {
+    reports: Reports.find({}).fetch(),
+    ready: subscription.ready(),
+  };
+})(MapComponent);
