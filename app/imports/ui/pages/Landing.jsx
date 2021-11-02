@@ -43,7 +43,7 @@ class Landing extends React.Component {
       data.append('upload_preset', 'Big-Brain-Coders');
       Axios.post('https://api.cloudinary.com/v1_1/glarita/image/upload', data).then((r) => {
         console.log(r.data.url);
-        this.setState({ image: imageUri });
+        this.setState({ image: r.data.url });
       });
     }, cameraError = (error) => {
       console.debug(`Unable to obtain picture: ${error}`, 'app');
