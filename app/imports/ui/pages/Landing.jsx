@@ -2,6 +2,7 @@
 // import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Grid, Image, Button } from 'semantic-ui-react';
+import Axios from 'axios';
 import { Link } from 'react-router-dom';
 
 /** A simple static component to render some text for the landing page. */
@@ -9,7 +10,7 @@ class Landing extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: null,
+      image: '',
     };
   }
 
@@ -36,7 +37,14 @@ class Landing extends React.Component {
     const options = this.setOptions(srcType);
 
     navigator.camera.getPicture(cameraSuccess = (imageUri) => {
-      this.setState({ image: imageUri });
+      const data = new FormData();
+      data.append('imageFile', imageUri);
+      data.append('cloud_name', 'glarita');
+      data.append('upload_preset', 'Big-Brain-Coders');
+      Axios.post('https://api.cloudinary.com/v1_1/glarita/image/upload', data).then((r) => {
+        console.log(r.data.url);
+        this.setState({ image: imageUri });
+      });
     }, cameraError = (error) => {
       console.debug(`Unable to obtain picture: ${error}`, 'app');
 
