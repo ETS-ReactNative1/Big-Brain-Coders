@@ -10,6 +10,7 @@ function addData(data) {
   Stuffs.define(data);
 }
 
+/** Initialize the database with a default report document. */
 function addReports(data) {
   console.log(`  Adding: (${data.animal}) report`);
   Reports.define(data);

@@ -16,6 +16,7 @@ export const reportDefineMethod = new ValidatedMethod({
   run(definitionData) {
     console.log('reportDefineMethod', definitionData);
     if (Meteor.isServer) {
+      console.log('test');
       const docID = Reports.define(definitionData);
       console.log(`reportDefineMethod returning ${docID}. Now have ${Reports.count()}`);
       return docID;

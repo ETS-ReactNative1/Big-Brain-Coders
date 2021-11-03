@@ -2,7 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import swal from 'sweetalert';
-import { Grid, Image, Button, Header, Segment } from 'semantic-ui-react';
+import { Grid, Image, Button, Header, Segment, Icon } from 'semantic-ui-react';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
@@ -58,6 +58,7 @@ class Landing extends React.Component {
           } else {
             swal('Success', 'Item added successfully', 'success');
             formRef.reset();
+            this.setState({ image: '' });
             // console.log('Success');
           }
         });
@@ -220,7 +221,14 @@ class Landing extends React.Component {
                         />
                       }
                       <Grid.Column floated='left'>
-                        <Image size='small' src={this.state.image}/>
+                        { this.state.image === '' &&
+                          <Header as='h4' style={{ marginTop: '5px' }}>Image uploading
+                            <Icon loading name='spinner' size='mini' color='green'/></Header>
+                        }
+                        {
+                          this.state.image &&
+                          <Image size='small' src={this.state.image}/>
+                        }
                       </Grid.Column>
                     </Grid.Column>
                     <Grid.Column width={2} floated='right'>
