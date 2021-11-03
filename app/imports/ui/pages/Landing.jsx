@@ -41,53 +41,25 @@ class Landing extends React.Component {
     };
   }
 
+  /** On submit, insert the data. */
   submit(data, formRef) {
-    const {
-      date,
-      latitude,
-      longitude,
-      island,
-      beachName,
-      description,
-      animal,
-      characteristics,
-      behavior,
-      numOfBeachgoers,
-      name,
-      phoneNumber,
-    } = data;
-    // const owner = Meteor.user().username;
+    // console.log('AddStuff.submit', data);
+    const { date, latitude, longitude, island, beachName, description, animal, characteristics,
+      behavior, numOfBeachgoers, name, phoneNumber } = data;
+   // const owner = Meteor.user().username;
     const imageUrl = this.state.image;
-    // console.log(`{ ${date}, ${latitude}, ${longitude}, ${island}, ${beachName}, ${description}, ${animal},
-    // ${characteristics}, ${behavior}, ${numOfBeachgoers}, ${name}, ${phoneNumber}, ${imageUrl} }`);
-    // added image field in using a state component to pass url of image.
-    reportDefineMethod.call({
-          date,
-          latitude,
-          longitude,
-          island,
-          beachName,
-          description,
-          animal,
-          characteristics,
-          behavior,
-          numOfBeachgoers,
-          name,
-          phoneNumber,
-          imageUrl,
-        },
+    // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
+    reportDefineMethod.call({ date, latitude, longitude, island, beachName, description,
+          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl },
         (error) => {
-          if (!imageUrl) {
-            swal('Error', 'Image has not completed uploading. Please wait a few more seconds and try again', 'error');
-          } else
-            if (error) {
-              swal('Error', error.message, 'error');
-              console.error(error.message);
-            } else {
-              swal('Success', 'Report submitted successfully', 'success');
-              console.log(data);
-              formRef.reset();
-            }
+          if (error) {
+            swal('Error', error.message, 'error');
+            // console.error(error.message);
+          } else {
+            swal('Success', 'Item added successfully', 'success');
+            formRef.reset();
+            // console.log('Success');
+          }
         });
   }
 
