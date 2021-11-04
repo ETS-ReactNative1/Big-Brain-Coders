@@ -38,6 +38,7 @@ class Landing extends React.Component {
     super(props);
     this.state = {
       image: '',
+      loader: false,
     };
   }
 
@@ -79,6 +80,7 @@ class Landing extends React.Component {
     Axios.post('https://api.cloudinary.com/v1_1/glarita/image/upload', data).then((res) => {
       console.log(res.data.url);
       this.setState({ image: res.data.url });
+      this.setState({ loader: false });
     });
   };
 
@@ -105,14 +107,7 @@ class Landing extends React.Component {
     const options = this.setOptions(srcType);
 
     navigator.camera.getPicture(cameraSuccess = (imageUri) => {
-      const data = new FormData();
-      data.append('imageFile', imageUri);
-      data.append('cloud_name', 'glarita');
-      data.append('upload_preset', 'Big-Brain-Coders');
-      Axios.post('https://api.cloudinary.com/v1_1/glarita/image/upload', data).then((r) => {
-        console.log(r.data.url);
-        this.setState({ image: r.data.url });
-      });
+      this.uploadImg(imageUri);
     }, cameraError = (error) => {
       console.debug(`Unable to obtain picture: ${error}`, 'app');
 
@@ -126,7 +121,7 @@ class Landing extends React.Component {
     const options = this.setOptions(srcType);
 
     navigator.camera.getPicture(cameraSuccess = (imageUri) => {
-      this.setState({ image: imageUri });
+      this.uploadImg(imageUri);
     }, cameraError = (error) => {
       console.debug(`Unable to obtain picture: ${error}`, 'app');
 
@@ -210,6 +205,7 @@ class Landing extends React.Component {
                           id="files"
                           onChange={(event) => {
                             this.uploadImg(event.target.files);
+                            this.setState({ loader: true });
                           }}
                       />
                       {
@@ -220,10 +216,11 @@ class Landing extends React.Component {
                             onClick={this.openGallery}
                         />
                       }
-                      <Grid.Column floated='left'>
-                        { this.state.image === '' &&
-                          <Header as='h4' style={{ marginTop: '5px' }}>Image uploading
-                            <Icon loading name='spinner' size='mini' color='green'/></Header>
+                      <Grid.Column>
+                        { this.state.loader === true &&
+                          <Header as='h4' style={{ marginTop: '5px' }}>
+                            <Icon loading name='spinner' size='small' color='green'/>Image uploading
+                            </Header>
                         }
                         {
                           this.state.image &&
