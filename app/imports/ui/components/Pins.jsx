@@ -36,9 +36,9 @@ class Pins extends React.Component {
   render() {
     return (
         <ReactComponent
-            lat={this.props.reports.latitude}
-            lng={this.props.reports.longitude}
-            text="My Marker"
+            lat={this.props.lat}
+            lng={this.props.lng}
+            text={this.props.date}
         />
     );
   }
@@ -46,7 +46,10 @@ class Pins extends React.Component {
 
 /** Require a document to be passed to this component. */
 Pins.propTypes = {
-  reports: PropTypes.object.isRequired,
+  // reports: PropTypes.object.isRequired,
+  lat: PropTypes.number.isRequired,
+  lng: PropTypes.number.isRequired,
+  date: PropTypes.string.isRequired,
 };
 
 /** Wrap this component in withRouter since we use the <Link> React Router element. */

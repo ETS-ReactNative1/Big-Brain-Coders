@@ -29,12 +29,17 @@ class MapComponent extends React.Component {
               defaultCenter={this.props.center}
               defaultZoom={this.props.zoom}
           >
-            {this.props.reports.map((reports) => <Pins key={reports._id} reports={reports} />)}
-            {/*<AnyReactComponent*/}
-            {/*    lat={21.330970673074834}*/}
-            {/*    lng={-157.69216914705936}*/}
-            {/*    text="My Marker"*/}
-            {/*/>*/}
+            {
+              this.props.reports.map(report => (
+                    <Pins key={report.date} lat={report.latitude} lng={report.longitude} date={report.date}/>
+                ))
+            }
+            {/* {this.props.reports.map((reports) => <Pins key={reports._id} reports={reports} />)} */}
+            {/* <AnyReactComponent */}
+            {/*    lat={21.330970673074834} */}
+            {/*    lng={-157.69216914705936} */}
+            {/*    text="My Marker" */}
+            {/* /> */}
           </GoogleMapReact>
         </div>
     );
