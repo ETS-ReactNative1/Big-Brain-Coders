@@ -29,16 +29,20 @@ const ReactComponent = () => <div style={greatPlaceStyle}>
 
     </div>;
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
-
 class Pins extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      makePin: true,
+    };
+  }
 
   render() {
     return (
         <ReactComponent
             lat={this.props.lat}
             lng={this.props.lng}
-            text={this.props.date}
+            text={this.props.reports.animal}
         />
     );
   }
@@ -46,7 +50,9 @@ class Pins extends React.Component {
 
 /** Require a document to be passed to this component. */
 Pins.propTypes = {
-  // reports: PropTypes.object.isRequired,
+  reports: PropTypes.object.isRequired,
+  search: PropTypes.string,
+  filter: PropTypes.string,
   lat: PropTypes.number.isRequired,
   lng: PropTypes.number.isRequired,
   date: PropTypes.string.isRequired,
