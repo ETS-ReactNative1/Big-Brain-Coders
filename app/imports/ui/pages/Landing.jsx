@@ -135,7 +135,7 @@ class Landing extends React.Component {
       paddingTop: '0px',
     };
     return (
-        <Grid verticalAlign='middle' container centered>
+        <Grid verticalAlign='middle' container centered stackable>
           <Grid.Column width={14}>
             <Header as="h2" textAlign="center">Add a Report</Header>
             <Link to={'/map'}>Big Map</Link>
@@ -187,7 +187,7 @@ class Landing extends React.Component {
                     </Grid.Column>
                   </Grid.Row>
                   <Grid.Row style={spacing}>
-                    <Grid.Column width={5}>
+                    <Grid.Column width={8}>
                       {
                         Meteor.isCordova === true &&
                         <Button
@@ -216,7 +216,7 @@ class Landing extends React.Component {
                             onClick={this.openGallery}
                         />
                       }
-                      <Grid.Column>
+                      <Grid.Column floated='right'>
                         { this.state.loader === true &&
                           <Header as='h4' style={{ marginTop: '5px' }}>
                             <Icon loading name='spinner' size='small' color='green'/>Image uploading
@@ -228,7 +228,9 @@ class Landing extends React.Component {
                         }
                       </Grid.Column>
                     </Grid.Column>
-                    <Grid.Column width={2} floated='right'>
+                    <Grid.Column width={3}>
+                    </Grid.Column>
+                    <Grid.Column width={16}>
                       <SubmitField value='Submit' style={{ marginTop: '20px' }}/>
                     </Grid.Column>
                   </Grid.Row>
