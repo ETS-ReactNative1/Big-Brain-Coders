@@ -89,7 +89,7 @@ class MapComponent extends React.Component {
           >
             {
               this.props.reports.map(report => (
-                  <Pins key={report.date}
+                  <Pins key={report._id}
                         lat={report.latitude}
                         lng={report.longitude}
                         reports={report}
