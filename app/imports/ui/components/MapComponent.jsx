@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import GoogleMapReact from 'google-map-react';
+import InfoWindow from 'google-map-react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Stuffs } from '../../api/stuff/StuffCollection';
@@ -11,6 +12,7 @@ import Pins from './Pins';
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 class MapComponent extends React.Component {
+
   static defaultProps = {
     center: {
       lat: 21.330970673074834,
@@ -28,10 +30,14 @@ class MapComponent extends React.Component {
               bootstrapURLKeys={{ key: Meteor.settings.public.googleMaps }}
               defaultCenter={this.props.center}
               defaultZoom={this.props.zoom}
+              onClick={this.onMapClicked}
           >
             {
               this.props.reports.map(report => (
-                    <Pins key={report.date} lat={report.latitude} lng={report.longitude} date={report.date}/>
+                  // eslint-disable-next-line max-len
+                    <Pins onClick={this.onMarkerClick} key={report.date} lat={report.latitude} lng={report.longitude} date={report.date}
+                          reports={report} text={report.animal}
+                    />
                 ))
             }
             {/* {this.props.reports.map((reports) => <Pins key={reports._id} reports={reports} />)} */}

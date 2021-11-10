@@ -15,13 +15,12 @@ const greatPlaceStyle = {
   left: -K_WIDTH / 2,
   top: -K_HEIGHT / 2,
 
-  border: '5px solid #f44336',
+  border: '5px solid #3F51B5FF',
   borderRadius: K_HEIGHT,
   backgroundColor: 'white',
   textAlign: 'center',
   color: '#3f51b5',
-  fontSize: 16,
-  fontWeight: 'bold',
+  fontSize: 10,
   padding: 4,
 };
 
@@ -29,16 +28,17 @@ const ReactComponent = () => <div style={greatPlaceStyle}>
 
     </div>;
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const AnyReactComponent = ({ text }) => <div style={greatPlaceStyle}>{text}</div>;
 
 class Pins extends React.Component {
 
   render() {
     return (
-        <ReactComponent
+        <AnyReactComponent
             lat={this.props.lat}
             lng={this.props.lng}
-            text={this.props.date}
+            text={this.props.reports.animal}
+
         />
     );
   }
@@ -46,7 +46,7 @@ class Pins extends React.Component {
 
 /** Require a document to be passed to this component. */
 Pins.propTypes = {
-  // reports: PropTypes.object.isRequired,
+  reports: PropTypes.object.isRequired,
   lat: PropTypes.number.isRequired,
   lng: PropTypes.number.isRequired,
   date: PropTypes.string.isRequired,
