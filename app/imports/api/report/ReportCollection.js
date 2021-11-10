@@ -31,7 +31,11 @@ class ReportCollection extends BaseCollection {
             numOfBeachgoers: Number,
             name: String,
             phoneNumber: String,
-            imageUrl: String,
+            imageUrl: {
+              type: String,
+              optional: true,
+            },
+            owner: String,
         }));
     }
 
@@ -50,6 +54,7 @@ class ReportCollection extends BaseCollection {
    * @param name the name of the reporter.
    * @param phoneNumber phone number of the reporter.
    * @param imageUrl image url uploaded by user.
+   * @param owner this is the owner
    * @return {String} the docID of the new document.
    */
   define({
@@ -66,6 +71,7 @@ class ReportCollection extends BaseCollection {
            name,
            phoneNumber,
            imageUrl,
+           owner,
          }) {
     const docID = this._collection.insert({
       date,
@@ -81,6 +87,7 @@ class ReportCollection extends BaseCollection {
       name,
       phoneNumber,
       imageUrl,
+      owner,
     });
     return docID;
   }
@@ -106,6 +113,7 @@ class ReportCollection extends BaseCollection {
     name,
     phoneNumber,
     imageUrl,
+      owner,
   }) {
     const updateData = {};
     if (date) {
@@ -147,6 +155,9 @@ class ReportCollection extends BaseCollection {
     }
     if (imageUrl) {
       updateData.imageUrl = imageUrl;
+    }
+    if (owner) {
+      updateData.owner = owner;
     }
     this._collection.update(docID, { $set: updateData });
   }
