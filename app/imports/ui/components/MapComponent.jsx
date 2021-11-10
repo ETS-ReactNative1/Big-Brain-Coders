@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import GoogleMapReact from 'google-map-react';
+import InfoWindow from 'google-map-react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Dropdown, Label, Menu } from 'semantic-ui-react';
@@ -62,6 +63,9 @@ class MapComponent extends React.Component {
       <Pins key={report._id}
             lat={report.latitude}
             lng={report.longitude}
+            onClick={this.onMarkerClick}
+            date={report.date}
+            text={report.animal}
             reports={report}
             search={this.state.search}
             filter={this.state.filter}
@@ -106,18 +110,8 @@ class MapComponent extends React.Component {
               bootstrapURLKeys={{ key: Meteor.settings.public.googleMaps }}
               defaultCenter={this.props.center}
               defaultZoom={this.props.zoom}
+              onClick={this.onMapClicked}
           >
-            {/* { */}
-            {/*  this.props.reports.map(report => ( */}
-            {/*      <Pins key={report._id} */}
-            {/*            lat={report.latitude} */}
-            {/*            lng={report.longitude} */}
-            {/*            reports={report} */}
-            {/*            search={this.state.search} */}
-            {/*            filter={this.state.filter} */}
-            {/*      /> */}
-            {/*    )) */}
-            {/* } */}
             {this.pinData()}
           </GoogleMapReact>
         </div>

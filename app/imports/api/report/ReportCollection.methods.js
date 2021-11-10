@@ -14,10 +14,11 @@ export const reportDefineMethod = new ValidatedMethod({
   mixins: [CallPromiseMixin],
   validate: null,
   run(definitionData) {
-    // console.log('stuffDefineMethod', definitionData);
+    console.log('reportDefineMethod', definitionData);
     if (Meteor.isServer) {
+      console.log('test');
       const docID = Reports.define(definitionData);
-      // console.log(`stuffDefineMethod returning ${docID}. Now have ${Stuffs.count()}`);
+      console.log(`reportDefineMethod returning ${docID}. Now have ${Reports.count()}`);
       return docID;
     }
     return '';
