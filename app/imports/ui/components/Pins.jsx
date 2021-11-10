@@ -28,28 +28,25 @@ const ReactComponent = () => <div style={greatPlaceStyle}>
 
     </div>;
 
-const AnyReactComponent = ({ text }) => <div style={greatPlaceStyle}>{text}</div>;
-
 class Pins extends React.Component {
-
   render() {
-    return (
-        <AnyReactComponent
-            lat={this.props.lat}
-            lng={this.props.lng}
-            text={this.props.reports.animal}
-
-        />
-    );
+      return (
+          <ReactComponent
+              lat={this.props.lat}
+              lng={this.props.lng}
+              text={this.props.reports.animal}
+          />
+      );
   }
 }
 
 /** Require a document to be passed to this component. */
 Pins.propTypes = {
   reports: PropTypes.object.isRequired,
+  search: PropTypes.string,
+  filter: PropTypes.string,
   lat: PropTypes.number.isRequired,
   lng: PropTypes.number.isRequired,
-  date: PropTypes.string.isRequired,
 };
 
 /** Wrap this component in withRouter since we use the <Link> React Router element. */
