@@ -3,9 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import GoogleMapReact from 'google-map-react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
+import { Dropdown, Label, Menu } from 'semantic-ui-react';
 import { Reports } from '../../api/report/ReportCollection';
 import Pins from './Pins';
-import { Dropdown, Label, Menu } from 'semantic-ui-react';
 
 class MapComponent extends React.Component {
   constructor(props) {
@@ -33,21 +33,42 @@ class MapComponent extends React.Component {
       value: 'Island',
     },
     {
-      key: 'Beach',
-      text: 'Beach',
-      value: 'Beach',
-    },
-    {
       key: 'Animal',
       text: 'Animal',
       value: 'Animal',
     },
-    {
-      key: 'Behavior',
-      text: 'Behavior',
-      value: 'Behavior',
-    },
   ];
+
+  pinData() {
+    const pinItems = this.props.reports.filter((value) => {
+      if (this.state.filter === 'All' || this.state.filter === '') {
+        return value;
+      }
+      if (this.state.filter === 'Date') {
+        if (value.date.toLowerCase().includes(this.state.search.toLowerCase())) {
+          return value;
+        }
+      } else if (this.state.filter === 'Island') {
+        if (value.island.toString().toLowerCase().includes(this.state.search.toLowerCase())) {
+          return value;
+        }
+      } else if (this.state.filter === 'Animal') {
+        if (value.animal.toString().toLowerCase().includes(this.state.search.toLowerCase())) {
+          return value;
+        }
+      }
+      return null;
+    }).map(report => (
+      <Pins key={report._id}
+            lat={report.latitude}
+            lng={report.longitude}
+            reports={report}
+            search={this.state.search}
+            filter={this.state.filter}
+      />));
+
+    return pinItems;
+  }
 
   static defaultProps = {
     center: {
@@ -58,7 +79,6 @@ class MapComponent extends React.Component {
   };
 
   render() {
-    console.log(Meteor.settings.public.googleMaps);
     return (
         // Important! Always set the container height explicitly
         <div style={{ height: '100vh', width: '100%' }}>
@@ -77,8 +97,8 @@ class MapComponent extends React.Component {
                 selection
                 options={MapComponent.optionsArray}
                 onChange={(e, data) => {
-                  console.log(data.value);
                   this.setState({ filter: data.value });
+                  console.log(data.value);
                 }}
             />
           </Menu.Item>
@@ -87,23 +107,18 @@ class MapComponent extends React.Component {
               defaultCenter={this.props.center}
               defaultZoom={this.props.zoom}
           >
-            {
-              this.props.reports.map(report => (
-                  <Pins key={report._id}
-                        lat={report.latitude}
-                        lng={report.longitude}
-                        reports={report}
-                        search={this.state.search}
-                        filter={this.state.filter}
-                  />
-                ))
-            }
-            {/* {this.props.reports.map((reports) => <Pins key={reports._id} reports={reports} />)} */}
-            {/* <AnyReactComponent */}
-            {/*    lat={21.330970673074834} */}
-            {/*    lng={-157.69216914705936} */}
-            {/*    text="My Marker" */}
-            {/* /> */}
+            {/* { */}
+            {/*  this.props.reports.map(report => ( */}
+            {/*      <Pins key={report._id} */}
+            {/*            lat={report.latitude} */}
+            {/*            lng={report.longitude} */}
+            {/*            reports={report} */}
+            {/*            search={this.state.search} */}
+            {/*            filter={this.state.filter} */}
+            {/*      /> */}
+            {/*    )) */}
+            {/* } */}
+            {this.pinData()}
           </GoogleMapReact>
         </div>
     );

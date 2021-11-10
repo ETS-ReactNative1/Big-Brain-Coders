@@ -30,21 +30,14 @@ const ReactComponent = () => <div style={greatPlaceStyle}>
     </div>;
 
 class Pins extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      makePin: true,
-    };
-  }
-
   render() {
-    return (
-        <ReactComponent
-            lat={this.props.lat}
-            lng={this.props.lng}
-            text={this.props.reports.animal}
-        />
-    );
+      return (
+          <ReactComponent
+              lat={this.props.lat}
+              lng={this.props.lng}
+              text={this.props.reports.animal}
+          />
+      );
   }
 }
 
@@ -55,7 +48,6 @@ Pins.propTypes = {
   filter: PropTypes.string,
   lat: PropTypes.number.isRequired,
   lng: PropTypes.number.isRequired,
-  date: PropTypes.string.isRequired,
 };
 
 /** Wrap this component in withRouter since we use the <Link> React Router element. */
