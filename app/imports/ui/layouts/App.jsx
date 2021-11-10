@@ -19,6 +19,7 @@ import MapComponent from '../components/MapComponent';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 class App extends React.Component {
+  
   render() {
     return (
         <Router>

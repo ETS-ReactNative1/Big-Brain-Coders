@@ -6,7 +6,13 @@ App.info({
   version: "0.0.1"
 });
 
-App.icons('icons/turtle.jpg');
+App.icons({
+  'android_mdpi': 'public/turtle.jpg',
+  'android_hdpi': 'public/turtle.jpg',
+  'android_xhdpi': 'public/turtle.jpg',
+  'android_xxhdpi': 'public/turtle.jpg',
+  'android_xxxhdpi': 'public/turtle.jpg',
+});
 // For dev testing, remove for deploy
 App.appendToConfig(`
     <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
