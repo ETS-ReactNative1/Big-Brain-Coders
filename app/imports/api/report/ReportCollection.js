@@ -11,50 +11,45 @@ export const reportPublications = {
 };
 
 class ReportCollection extends BaseCollection {
-  constructor() {
-    super('Reports', new SimpleSchema({
-      date: String,
-      latitude: Number,
-      longitude: Number,
-      island: String,
-      beachName: {
-        type: String,
-        optional: true,
-      },
-      description: {
-        type: String,
-        optional: true,
-      },
-      animal: String,
-      characteristics: String,
-      behavior: String,
-      numOfBeachgoers: Number,
-      name: String,
-      phoneNumber: String,
-      imageUrl: {
-        type: String,
-        optional: true,
-      },
-      owner: String,
-    }));
-  }
+    constructor() {
+        super('Reports', new SimpleSchema({
+            date: String,
+            latitude: Number,
+            longitude: Number,
+            island: String,
+            beachName: {
+                type: String,
+                optional: true,
+            },
+            description: {
+                type: String,
+                optional: true,
+            },
+            animal: String,
+            characteristics: String,
+            behavior: String,
+            numOfBeachgoers: Number,
+            name: String,
+            phoneNumber: String,
+            imageUrl: String,
+        }));
+    }
 
   /**
    * Defines a new Report item.
-   * @param date the name of the item.
-   * @param latitude how many.
-   * @param longitude the owner of the item.
-   * @param island the owner of the item.
-   * @param beachName the owner of the item.
-   * @param description the owner of the item.
-   * @param animal the owner of the item.
-   * @param characteristics the owner of the item.
-   * @param behavior the owner of the item.
-   * @param numOfBeachgoers the owner of the item.
-   * @param name the owner of the item.
-   * @param phoneNumber the condition of the item.
-   * @param imageUrl the condition of the item.
-   * @param owner describe owner.
+   * @param date the date of the item
+   * @param latitude the latitude coordinate
+   * @param longitude the longitude coordinate
+   * @param island the island of the report.
+   * @param beachName the Beach of the item
+   * @param description the description of the item.
+   * @param animal the animal of the report
+   * @param characteristics the characteristics of the animal.
+   * @param behavior the behavior of the animal in report.
+   * @param numOfBeachgoers the number of beach goers.
+   * @param name the name of the reporter.
+   * @param phoneNumber phone number of the reporter.
+   * @param imageUrl image url uploaded by user.
    * @return {String} the docID of the new document.
    */
   define({
@@ -71,7 +66,6 @@ class ReportCollection extends BaseCollection {
            name,
            phoneNumber,
            imageUrl,
-           owner,
          }) {
     const docID = this._collection.insert({
       date,
@@ -87,7 +81,6 @@ class ReportCollection extends BaseCollection {
       name,
       phoneNumber,
       imageUrl,
-      owner,
     });
     return docID;
   }
@@ -113,7 +106,6 @@ class ReportCollection extends BaseCollection {
     name,
     phoneNumber,
     imageUrl,
-    owner,
   }) {
     const updateData = {};
     if (date) {
@@ -155,9 +147,6 @@ class ReportCollection extends BaseCollection {
     }
     if (imageUrl) {
       updateData.imageUrl = imageUrl;
-    }
-    if (owner) {
-      updateData.owner = owner;
     }
     this._collection.update(docID, { $set: updateData });
   }
