@@ -1,11 +1,12 @@
 ## How to run Coastar
 
+You can go to our deployed link located [here](143.198.237.92)
+
 To run Coastar locally, download the repo and [install Meteor](https://www.meteor.com/install).
 
 Open your terminal and cd into the directory of the project and install the necessary libaries:
 ```
 $ meteor npm install
-$ npm install axios
 ```
 
 After meteor is installed, you can run the application by typing in the command:
@@ -47,9 +48,10 @@ site has very high traffic. You can safely ignore this warning without any probl
 development.
 
 If all goes well, the template application will appear at http://localhost:3000. You can login in using the credentials:
-admin@foo.com | changeme
-john@foo.com | changeme
+admin@foo.com | changeme <br />
+john@foo.com | changeme <br />
 in setting.development.json, or else you can register an new account.
+
 
 
 
