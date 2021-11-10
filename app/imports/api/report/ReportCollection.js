@@ -11,29 +11,29 @@ export const reportPublications = {
 };
 
 class ReportCollection extends BaseCollection {
-  constructor() {
-    super('Reports', new SimpleSchema({
-      date: String,
-      latitude: Number,
-      longitude: Number,
-      island: String,
-      beachName: {
-        type: String,
-        optional: true,
-      },
-      description: {
-        type: String,
-        optional: true,
-      },
-      animal: String,
-      characteristics: String,
-      behavior: String,
-      numOfBeachgoers: Number,
-      name: String,
-      phoneNumber: String,
-      imageUrl: String,
-    }));
-  }
+    constructor() {
+        super('Reports', new SimpleSchema({
+            date: String,
+            latitude: Number,
+            longitude: Number,
+            island: String,
+            beachName: {
+                type: String,
+                optional: true,
+            },
+            description: {
+                type: String,
+                optional: true,
+            },
+            animal: String,
+            characteristics: String,
+            behavior: String,
+            numOfBeachgoers: Number,
+            name: String,
+            phoneNumber: String,
+            imageUrl: String,
+        }));
+    }
 
   /**
    * Defines a new Report item.
