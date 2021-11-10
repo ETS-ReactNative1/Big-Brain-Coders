@@ -197,6 +197,7 @@ class Landing extends React.Component {
                         />
                       }
                       <p style={{ marginBottom: '5px', fontSize: '13px' }}><strong>Upload Image</strong>
+                        <strong style={{ color: '#DA2828' }}> *</strong>
                       </p>
                       <input
                           style={{ marginTop: '0px' }}
