@@ -4,3 +4,5 @@
 config/settings.production.json
 app/node_modules/
 config/settings.development.json
+builds
+app/.deploy
