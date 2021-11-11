@@ -14,8 +14,31 @@ class MapComponent extends React.Component {
     this.state = {
       search: '',
       filter: '',
+      activeMarker: {},
+      selectedPlace: {},
+      showingInfoWindow: false,
     };
   }
+
+  onMarkerClick = (props, marker) => this.setState({
+        activeMarker: marker,
+        selectedPlace: props,
+        showingInfoWindow: true,
+      });
+
+  onInfoWindowClose = () => this.setState({
+        activeMarker: null,
+        showingInfoWindow: false,
+      });
+
+  onMapClicked = () => {
+    if (this.state.showingInfoWindow) {
+ this.setState({
+        activeMarker: null,
+        showingInfoWindow: false,
+      });
+    }
+  };
 
   static optionsArray = [
     {
@@ -63,12 +86,13 @@ class MapComponent extends React.Component {
       <Pins key={report._id}
             lat={report.latitude}
             lng={report.longitude}
-            onClick={this.onMarkerClick}
             date={report.date}
             text={report.animal}
             reports={report}
             search={this.state.search}
             filter={this.state.filter}
+            onClick={this.onMarkerClick}
+            name={report.animal}
       />));
 
     return pinItems;
@@ -114,6 +138,15 @@ class MapComponent extends React.Component {
           >
             {this.pinData()}
           </GoogleMapReact>
+            <InfoWindow
+                marker={this.state.activeMarker}
+                onClose={this.onInfoWindowClose}
+                visible={this.state.showingInfoWindow}
+            >
+                <div>
+                    <h4>{this.state.selectedPlace.name}</h4>
+                </div>
+            </InfoWindow>
         </div>
     );
   }
