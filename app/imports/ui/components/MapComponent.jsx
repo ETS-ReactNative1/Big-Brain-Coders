@@ -93,7 +93,18 @@ class MapComponent extends React.Component {
             filter={this.state.filter}
             onClick={this.onMarkerClick}
             name={report.animal}
-      />));
+
+      >
+      <InfoWindow
+          marker={this.state.activeMarker}
+          onClose={this.onInfoWindowClose}
+          visible={this.state.showingInfoWindow}
+      >
+          <div>
+              <h4>{this.state.selectedPlace.name}</h4>
+          </div>
+      </InfoWindow>
+      </Pins>));
 
     return pinItems;
   }
@@ -130,6 +141,7 @@ class MapComponent extends React.Component {
                 }}
             />
           </Menu.Item>
+
           <GoogleMapReact
               bootstrapURLKeys={{ key: Meteor.settings.public.googleMaps }}
               defaultCenter={this.props.center}
@@ -138,15 +150,6 @@ class MapComponent extends React.Component {
           >
             {this.pinData()}
           </GoogleMapReact>
-            <InfoWindow
-                marker={this.state.activeMarker}
-                onClose={this.onInfoWindowClose}
-                visible={this.state.showingInfoWindow}
-            >
-                <div>
-                    <h4>{this.state.selectedPlace.name}</h4>
-                </div>
-            </InfoWindow>
         </div>
     );
   }
