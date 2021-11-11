@@ -34,6 +34,8 @@ class Pins extends React.Component {
           <ReactComponent
               lat={this.props.lat}
               lng={this.props.lng}
+              activeMarker={this.props.activeMarker}
+              selectedPlace={this.props.selectedPlace}
               text={this.props.reports.animal}
           />
       );
@@ -45,6 +47,8 @@ Pins.propTypes = {
   reports: PropTypes.object.isRequired,
   search: PropTypes.string,
   filter: PropTypes.string,
+  activeMarker: PropTypes.string,
+  selectedPlace: PropTypes.string,
   lat: PropTypes.number.isRequired,
   lng: PropTypes.number.isRequired,
 };
