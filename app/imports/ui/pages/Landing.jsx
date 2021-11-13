@@ -13,8 +13,14 @@ import { reportDefineMethod } from '../../api/report/ReportCollection.methods';
 /** Create a schema to specify the structure of the data to appear in the report form. */
 const formSchema = new SimpleSchema({
   date: String,
-  latitude: Number,
-  longitude: Number,
+  latitude: {
+    type: Number,
+    optional: true,
+  },
+  longitude: {
+    type: Number,
+    optional: true,
+  },
   island: String,
   beachName: {
     type: String,
@@ -38,20 +44,29 @@ class Landing extends React.Component {
     super(props);
     this.state = {
       image: '',
-      loader: false,
+      loader1: false,
+      loader2: false,
+      latitude: '',
+      longitude: '',
     };
   }
 
   /** On submit, insert the data. */
   submit(data, formRef) {
     // console.log('AddStuff.submit', data);
-    const { date, latitude, longitude, island, beachName, description, animal, characteristics,
-      behavior, numOfBeachgoers, name, phoneNumber } = data;
-   // const owner = Meteor.user().username;
+    const {
+      date, island, beachName, description, animal, characteristics,
+      behavior, numOfBeachgoers, name, phoneNumber,
+    } = data;
+    const owner = Meteor.user().username;
     const imageUrl = this.state.image;
+    const latitude = this.state.latitude;
+    const longitude = this.state.longitude;
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
-    reportDefineMethod.call({ date, latitude, longitude, island, beachName, description,
-          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl },
+    reportDefineMethod.call({
+          date, latitude, longitude, island, beachName, description,
+          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl, owner,
+        },
         (error) => {
           if (error) {
             swal('Error', error.message, 'error');
@@ -65,11 +80,17 @@ class Landing extends React.Component {
         });
   }
 
-  displayImage = (imgUri) => {
+  getLocation = () => {
+    if (navigator.geolocation) {
+      console.log(navigator.geolocation.getCurrentPosition(this.showPosition));
+    } else {
+      x.innerHTML = 'Geolocation is not supported by this browser.';
+    }
+  }
 
-    const elem = document.getElementById('imageFile');
-    elem.src = imgUri;
-    return elem.src;
+  showPosition = (position) => {
+    this.setState({ latitude: position.coords.latitude });
+    this.setState({ longitude: position.coords.longitude });
   }
 
   uploadImg = (files) => {
@@ -80,7 +101,7 @@ class Landing extends React.Component {
     Axios.post('https://api.cloudinary.com/v1_1/glarita/image/upload', data).then((res) => {
       console.log(res.data.url);
       this.setState({ image: res.data.url });
-      this.setState({ loader: false });
+      this.setState({ loader2: false });
     });
   };
 
@@ -134,6 +155,12 @@ class Landing extends React.Component {
       marginTop: '0px',
       paddingTop: '0px',
     };
+    const button = {
+      borderRadius: '10px',
+      backgroundColor: '#298EC2',
+      color: 'white',
+      padding: '12px',
+    };
     return (
         <Grid verticalAlign='middle' container centered stackable>
           <Grid.Column width={14}>
@@ -145,12 +172,30 @@ class Landing extends React.Component {
               <Segment>
                 <Grid>
                   <DateField name='date' label='Date and Time' style={{ marginTop: '20px' }}/>
-                  <Grid.Row style={spacing}>
-                    <Grid.Column width={8}>
-                      <NumField name='latitude'/>
-                    </Grid.Column>
-                    <Grid.Column width={8}>
-                      <NumField name='longitude'/>
+                    <Grid.Row style={spacing}>
+                      <Grid.Column width={8}>
+                        <NumField name='latitude' value={this.state.latitude}/>
+                      </Grid.Column>
+                      <Grid.Column width={8}>
+                        <NumField name='longitude' value={this.state.longitude}/>
+                      </Grid.Column>
+                    </Grid.Row>
+                  <Grid.Row style={spacing} centered columns={1}>
+                    <Grid.Column>
+                    <Button onClick={() => {
+                      if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(this.showPosition);
+                        this.setState({ loader1: true });
+                      } else {
+                        x.innerHTML = 'Geolocation is not supported by this browser.';
+                      }
+                    }
+                    } type='button' size='small' style={button}>Use Current Location</Button>
+                      {this.state.loader1 === true && !this.state.latitude && !this.state.longitude &&
+                      <Header as='h4' style={{ marginTop: '5px' }}>
+                        <Icon loading name='spinner' size='small' color='green'/>Locating..
+                      </Header>
+                      }
                     </Grid.Column>
                   </Grid.Row>
                   <Grid.Row style={spacing}>
@@ -206,7 +251,7 @@ class Landing extends React.Component {
                           id="files"
                           onChange={(event) => {
                             this.uploadImg(event.target.files);
-                            this.setState({ loader: true });
+                            this.setState({ loader2: true });
                           }}
                       />
                       {
@@ -218,10 +263,10 @@ class Landing extends React.Component {
                         />
                       }
                       <Grid.Column floated='right'>
-                        { this.state.loader === true &&
-                          <Header as='h4' style={{ marginTop: '5px' }}>
-                            <Icon loading name='spinner' size='small' color='green'/>Image uploading
-                            </Header>
+                        {this.state.loader2 === true &&
+                        <Header as='h4' style={{ marginTop: '5px' }}>
+                          <Icon loading name='spinner' size='small' color='green'/>Image uploading
+                        </Header>
                         }
                         {
                           this.state.image &&
