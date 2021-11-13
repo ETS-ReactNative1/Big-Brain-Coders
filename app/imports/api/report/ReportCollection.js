@@ -11,33 +11,41 @@ export const reportPublications = {
 };
 
 class ReportCollection extends BaseCollection {
-    constructor() {
-        super('Reports', new SimpleSchema({
-            date: String,
-            latitude: Number,
-            longitude: Number,
-            island: String,
-            beachName: {
-                type: String,
-                optional: true,
-            },
-            description: {
-                type: String,
-                optional: true,
-            },
-            animal: String,
-            characteristics: String,
-            behavior: String,
-            numOfBeachgoers: Number,
-            name: String,
-            phoneNumber: String,
-            imageUrl: {
-              type: String,
-              optional: true,
-            },
-            owner: String,
-        }));
-    }
+  constructor() {
+    super('Reports', new SimpleSchema({
+      date: String,
+      latitude: Number,
+      longitude: Number,
+      island: {
+        type: String,
+        allowedValues: ['Big Island', 'Oahu', 'Maui', 'Molokai', 'Kauai', 'Lanai', 'Niihau', 'Kahoolawe'],
+        defaultValue: 'Oahu',
+      },
+      beachName: {
+        type: String,
+        optional: true,
+      },
+      description: {
+        type: String,
+        optional: true,
+      },
+      animal: {
+        type: String,
+        allowedValues: ['Monk Seal', 'Sea Turtle', 'Dolphin', 'Whale', 'Seabird'],
+        defaultValue: 'good',
+      },
+      characteristics: String,
+      behavior: String,
+      numOfBeachgoers: Number,
+      name: String,
+      phoneNumber: String,
+      imageUrl: {
+        type: String,
+        optional: true,
+      },
+      owner: String,
+    }));
+  }
 
   /**
    * Defines a new Report item.
@@ -113,7 +121,7 @@ class ReportCollection extends BaseCollection {
     name,
     phoneNumber,
     imageUrl,
-      owner,
+    owner,
   }) {
     const updateData = {};
     if (date) {

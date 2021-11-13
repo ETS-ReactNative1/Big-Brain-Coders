@@ -7,7 +7,16 @@ import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 import 'uniforms-bridge-simple-schema-2';
-import { AutoForm, ErrorsField, NumField, SubmitField, TextField, DateField, LongTextField } from 'uniforms-semantic';
+import {
+  AutoForm,
+  ErrorsField,
+  NumField,
+  SubmitField,
+  TextField,
+  DateField,
+  LongTextField,
+  SelectField,
+} from 'uniforms-semantic';
 import { reportDefineMethod } from '../../api/report/ReportCollection.methods';
 
 /** Create a schema to specify the structure of the data to appear in the report form. */
@@ -21,7 +30,11 @@ const formSchema = new SimpleSchema({
     type: Number,
     optional: true,
   },
-  island: String,
+  island: {
+    type: String,
+    allowedValues: ['Big Island', 'Oahu', 'Maui', 'Molokai', 'Kauai', 'Lanai', 'Niihau', 'Kahoolawe'],
+    defaultValue: 'Oahu',
+  },
   beachName: {
     type: String,
     optional: true,
@@ -30,7 +43,11 @@ const formSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  animal: String,
+  animal: {
+    type: String,
+    allowedValues: ['Monk Seal', 'Sea Turtle', 'Dolphin', 'Whale', 'Seabird'],
+    defaultValue: 'Monk Seal',
+  },
   characteristics: String,
   behavior: String,
   numOfBeachgoers: Number,
@@ -172,35 +189,40 @@ class Landing extends React.Component {
               <Segment>
                 <Grid>
                   <DateField name='date' label='Date and Time' style={{ marginTop: '20px' }}/>
-                    <Grid.Row style={spacing}>
-                      <Grid.Column width={8}>
-                        <NumField name='latitude' value={this.state.latitude}/>
-                      </Grid.Column>
-                      <Grid.Column width={8}>
-                        <NumField name='longitude' value={this.state.longitude}/>
-                      </Grid.Column>
-                    </Grid.Row>
+                  <Grid.Row style={spacing}>
+                    <Grid.Column width={8}>
+                      <NumField name='latitude'/>
+                    </Grid.Column>
+                    <Grid.Column width={8}>
+                      <NumField name='longitude'/>
+                    </Grid.Column>
+                  </Grid.Row>
                   <Grid.Row style={spacing} centered columns={1}>
                     <Grid.Column>
-                    <Button onClick={() => {
-                      if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(this.showPosition);
-                        this.setState({ loader1: true });
-                      } else {
-                        x.innerHTML = 'Geolocation is not supported by this browser.';
+                      <Button onClick={() => {
+                        if (navigator.geolocation) {
+                          navigator.geolocation.getCurrentPosition(this.showPosition);
+                          this.setState({ loader1: true });
+                        } else {
+                          x.innerHTML = 'Geolocation is not supported by this browser.';
+                        }
                       }
-                    }
-                    } type='button' size='small' style={button}>Use Current Location</Button>
+                      } type='button' size='small' style={button}>Use Current Location</Button>
                       {this.state.loader1 === true && !this.state.latitude && !this.state.longitude &&
                       <Header as='h4' style={{ marginTop: '5px' }}>
                         <Icon loading name='spinner' size='small' color='green'/>Locating..
+                      </Header>
+                      }
+                      {this.state.latitude && this.state.longitude &&
+                      <Header as='h4' style={{ marginTop: '15px' }}>
+                        Latitude: {this.state.latitude}, Longitude: {this.state.longitude}
                       </Header>
                       }
                     </Grid.Column>
                   </Grid.Row>
                   <Grid.Row style={spacing}>
                     <Grid.Column width={7}>
-                      <TextField name='island'/>
+                      <SelectField name='island'/>
                     </Grid.Column>
                     <Grid.Column width={9}>
                       <TextField name='beachName' label='Beach Name'/>
@@ -211,7 +233,7 @@ class Landing extends React.Component {
                   </Grid.Column>
                   <Grid.Row style={spacing}>
                     <Grid.Column width={8}>
-                      <TextField name='animal'/>
+                      <SelectField name='animal'/>
                     </Grid.Column>
                     <Grid.Column width={8}>
                       <TextField name='characteristics'/>
