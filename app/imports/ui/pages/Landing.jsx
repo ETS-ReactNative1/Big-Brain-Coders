@@ -4,11 +4,13 @@ import React from 'react';
 import swal from 'sweetalert';
 import { Grid, Image, Button, Header, Segment, Icon } from 'semantic-ui-react';
 import Axios from 'axios';
+import GoogleMapReact from 'google-map-react';
 import { Link } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 import 'uniforms-bridge-simple-schema-2';
 import { AutoForm, ErrorsField, NumField, SubmitField, TextField, DateField, LongTextField } from 'uniforms-semantic';
 import { reportDefineMethod } from '../../api/report/ReportCollection.methods';
+// import ReportMapComponent from '../components/ReportMapComponent';
 
 /** Create a schema to specify the structure of the data to appear in the report form. */
 const formSchema = new SimpleSchema({
@@ -33,6 +35,11 @@ const formSchema = new SimpleSchema({
 });
 
 /** A simple static component to render some text for the landing page. */
+const center = {
+    lat: 21.330970673074834,
+    lng: -157.69216914705936,
+};
+const zoom = 11;
 class Landing extends React.Component {
   constructor(props) {
     super(props);
@@ -47,11 +54,11 @@ class Landing extends React.Component {
     // console.log('AddStuff.submit', data);
     const { date, latitude, longitude, island, beachName, description, animal, characteristics,
       behavior, numOfBeachgoers, name, phoneNumber } = data;
-   // const owner = Meteor.user().username;
+    const owner = Meteor.user().username;
     const imageUrl = this.state.image;
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
     reportDefineMethod.call({ date, latitude, longitude, island, beachName, description,
-          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl },
+          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl, owner },
         (error) => {
           if (error) {
             swal('Error', error.message, 'error');
@@ -70,6 +77,17 @@ class Landing extends React.Component {
     const elem = document.getElementById('imageFile');
     elem.src = imgUri;
     return elem.src;
+  }
+
+  getLocation = () => {
+    if (navigator.geolocation) {
+      console.log(navigator.geolocation.getCurrentPosition());
+    }
+  }
+
+  showPosition = (position) => {
+    console.log(position.coords.latitude);
+    console.log(position.coords.longitude);
   }
 
   uploadImg = (files) => {
@@ -239,6 +257,21 @@ class Landing extends React.Component {
                 </Grid>
               </Segment>
             </AutoForm>
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <Segment>
+              <div style={{ height: '75vh', width: '100%' }}>
+                <GoogleMapReact
+                    bootstrapURLKeys={{ key: Meteor.settings.public.googleMaps }}
+                    defaultCenter={center}
+                    defaultZoom={zoom}
+                    onClick={e => {
+                      console.log(e.lat());
+                    }}
+                />
+              </div>
+            </Segment>
+            <Button onClick={() => { navigator.geolocation.getCurrentPosition(this.showPosition); }}>get location</Button>
           </Grid.Column>
         </Grid>
     );

@@ -8,7 +8,7 @@ import { Dropdown, Label, Menu } from 'semantic-ui-react';
 import { Reports } from '../../api/report/ReportCollection';
 import Pins from './Pins';
 
-class MapComponent extends React.Component {
+class ReportMapComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -85,27 +85,7 @@ class MapComponent extends React.Component {
   render() {
     return (
         // Important! Always set the container height explicitly
-        <div style={{ height: '100vh', width: '100%' }}>
-          <Label>Search:</Label>
-          <input icon='search' placeholder='Search...' type="text"
-                 onChange={
-                   (event) => this.setState({ search: event.target.value })
-                 }/>
-          <Menu.Item>
-            <Dropdown
-                icon='filter'
-                floating
-                labeled
-                button
-                placeholder='Filter'
-                selection
-                options={MapComponent.optionsArray}
-                onChange={(e, data) => {
-                  this.setState({ filter: data.value });
-                  console.log(data.value);
-                }}
-            />
-          </Menu.Item>
+        <div style={{ height: '75vh', width: '100%' }}>
           <GoogleMapReact
               bootstrapURLKeys={{ key: Meteor.settings.public.googleMaps }}
               defaultCenter={this.props.center}
@@ -119,7 +99,7 @@ class MapComponent extends React.Component {
   }
 }
 
-MapComponent.propTypes = {
+ReportMapComponent.propTypes = {
   reports: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
@@ -132,4 +112,4 @@ export default withTracker(() => {
     reports: Reports.find({}).fetch(),
     ready: subscription.ready(),
   };
-})(MapComponent);
+})(ReportMapComponent);
