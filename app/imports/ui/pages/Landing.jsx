@@ -12,6 +12,14 @@ import { reportDefineMethod } from '../../api/report/ReportCollection.methods';
 
 /** Create a schema to specify the structure of the data to appear in the report form. */
 const formSchema = new SimpleSchema({
+  latitude: {
+    type: String,
+    optional: true,
+  },
+  longitude: {
+    type: String,
+    optional: true,
+  },
   island: {
     type: String,
     allowedValues: ['Oahu', 'Maui', 'Big Island', 'Kauai'],
@@ -48,7 +56,7 @@ class Landing extends React.Component {
   }
 
   /** On submit, insert the data. */
-  submit(data, formRef) {
+  submitMobile(data, formRef) {
     // console.log('AddStuff.submit', data);
     this.shareLocation();
     const { island, beachName, description, animal, characteristics,
@@ -58,6 +66,30 @@ class Landing extends React.Component {
     const date = new Date();
     const longitude = this.state.longitude;
     const latitude = this.state.latitude;
+    // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
+    reportDefineMethod.call({ date, latitude, longitude, island, beachName, description,
+          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl },
+        (error) => {
+          if (error) {
+            swal('Error', error.message, 'error');
+            // console.error(error.message);
+          } else {
+            swal('Success', 'Item added successfully', 'success');
+            formRef.reset();
+            this.setState({ image: '' });
+            // console.log('Success');
+          }
+        });
+  }
+
+  submitDesktop(data, formRef) {
+    // console.log('AddStuff.submit', data);
+    this.shareLocation();
+    const { longitude, latitude, island, beachName, description, animal, characteristics,
+      behavior, numOfBeachgoers, name, phoneNumber } = data;
+    // const owner = Meteor.user().username;
+    const imageUrl = this.state.image;
+    const date = new Date();
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
     reportDefineMethod.call({ date, latitude, longitude, island, beachName, description,
           animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl },
@@ -151,7 +183,7 @@ class Landing extends React.Component {
               <Link to={'/map'}>Big Map</Link>
               <AutoForm ref={ref => {
                 fRef = ref;
-              }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
+              }} schema={formSchema} onSubmit={data => this.submitMobile(data, fRef)}>
                 <Segment>
                   <Grid>
                     <Grid.Row style={spacing}>
@@ -223,10 +255,9 @@ class Landing extends React.Component {
             <Link to={'/map'}>Big Map</Link>
             <AutoForm ref={ref => {
               fRef = ref;
-            }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
+            }} schema={formSchema} onSubmit={data => this.submitDesktop(data, fRef)}>
               <Segment>
                 <Grid>
-                  <DateField name='date' label='Date and Time' style={{ marginTop: '20px' }}/>
                   <Grid.Row style={spacing}>
                     <Grid.Column width={8}>
                       <NumField name='latitude'/>
