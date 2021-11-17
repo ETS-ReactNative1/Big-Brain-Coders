@@ -11,22 +11,29 @@ class FirstLanding extends React.Component {
     };
     const buttons = {
       padding: '14px',
+      backgroundColor: '#6B94A4',
+      color: 'white',
+    };
+    const listColor = {
+     color: 'white',
     };
     return (
         <div className="landing">
         <Grid verticalAlign='middle' stackable container>
           <Grid.Row columns={2}>
             <Grid.Column computer={9}>
-              <Header style={header}>Saving Hawaii&apos;s marine wildlife <br/> one animal at a time.</Header>
+              <Header style={header} inverted>Saving Hawaii&apos;s marine wildlife <br/> one animal at a time.</Header>
               <List>
                 <ListItem>
-                  <ListHeader>Report a Sighting</ListHeader>
-                  <ListContent>If you spot an endangered marine animal, please fill out our sighting report
+                  <ListHeader style={listColor}>Report a Sighting</ListHeader>
+                  <ListContent style={listColor}>If you spot an endangered marine animal,
+                    please fill out our sighting report
                   </ListContent>
                 </ListItem>
                 <ListItem>
-                  <ListHeader>Report an Animal in Distress</ListHeader>
-                  <ListContent>If you spot an endangered marine animal, please fill out our sighting report
+                  <ListHeader style={listColor}>Report an Animal in Distress</ListHeader>
+                  <ListContent style={listColor}>If you spot an endangered marine animal,
+                    please fill out our sighting report
                   </ListContent>
                 </ListItem>
               </List>

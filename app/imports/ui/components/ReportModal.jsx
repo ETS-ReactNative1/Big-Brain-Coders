@@ -15,6 +15,8 @@ class ReportModal extends React.Component {
   render() {
     const buttons = {
       padding: '14px',
+      backgroundColor: '#6B94A4',
+      color: 'white',
     };
     return (
         <Modal
@@ -22,15 +24,16 @@ class ReportModal extends React.Component {
             onOpen={() => this.setState({ open: true })}
             open={this.open}
             trigger={<Button size='large' style={buttons}>Report an animal</Button>}
-            size='small'
+            size='tiny'
         >
           <Modal.Header>Report an Animal in Distress</Modal.Header>
           <Modal.Content image>
             <Modal.Description>
-              <Header>Thanks for using Coastar!</Header>
+              <Header>See an animal in trouble?</Header>
               <p>
-                If you see an animal in distress, please contact the Hawaii Marine Animal Response at: <br/>
-                (808) 123-4567
+                If you see an animal in distress, entangled, or injured,
+                please contact the <br/>  Hawaii Marine Animal Response hotline at: <br/>
+                <b>(888) 256-9840</b>
               </p>
             </Modal.Description>
           </Modal.Content>
