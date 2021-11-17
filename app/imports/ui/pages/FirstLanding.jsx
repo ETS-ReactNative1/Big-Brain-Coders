@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid, Header, List, ListContent, ListHeader, ListItem } from 'semantic-ui-react';
+import { Button, Grid, Header, Image, List, ListContent, ListHeader, ListItem } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import ReportModal from '../components/ReportModal';
 
@@ -16,14 +16,24 @@ class FirstLanding extends React.Component {
     };
     const listColor = {
      color: 'white',
+      fontSize: '18px',
+    };
+    const listSpacing = {
+      marginTop: '20px',
+    };
+    const spacing = {
+      paddingTop: 0,
+    };
+    const imageStyle = {
+      boxShadow: '15px',
     };
     return (
         <div className="landing">
         <Grid verticalAlign='middle' stackable container>
-          <Grid.Row columns={2}>
+          <Grid.Row columns={2} style={spacing}>
             <Grid.Column computer={9}>
               <Header style={header} inverted>Saving Hawaii&apos;s marine wildlife <br/> one animal at a time.</Header>
-              <List>
+              <List style={listSpacing}>
                 <ListItem>
                   <ListHeader style={listColor}>Report a Sighting</ListHeader>
                   <ListContent style={listColor}>If you spot an endangered marine animal,
@@ -38,11 +48,12 @@ class FirstLanding extends React.Component {
                 </ListItem>
               </List>
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column computer={7}>
+              <Image src='../images/report.png' size='big' className='landing-report'/>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row centered column={2}>
-            <Grid.Column computer={14} style={{ paddingRight: 0 }}>
+          <Grid.Row centered column={2} style={spacing}>
+            <Grid.Column computer={13} style={{ paddingRight: 0 }}>
               <div className='landing-buttons'>
                   <Button size='large' style={buttons} as={Link} to='/report'>Report a sighting</Button>
                 <div className='divider'/>
