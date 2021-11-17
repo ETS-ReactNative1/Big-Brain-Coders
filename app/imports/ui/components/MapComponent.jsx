@@ -11,34 +11,17 @@ import Pins from './Pins';
 class MapComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.test = this.test.bind(this);
     this.state = {
       search: '',
       filter: '',
-      activeMarker: {},
-      selectedPlace: {},
-      showingInfoWindow: false,
     };
   }
 
-  onMarkerClick = (props, marker) => this.setState({
-        activeMarker: marker,
-        selectedPlace: props,
-        showingInfoWindow: true,
-      });
-
-  onInfoWindowClose = () => this.setState({
-        activeMarker: null,
-        showingInfoWindow: false,
-      });
-
-  onMapClicked = () => {
-    if (this.state.showingInfoWindow) {
- this.setState({
-        activeMarker: null,
-        showingInfoWindow: false,
-      });
-    }
-  };
+  test() {
+    // eslint-disable-next-line no-undef
+      alert('Hello!');
+  }
 
   static optionsArray = [
     {
@@ -91,19 +74,9 @@ class MapComponent extends React.Component {
             reports={report}
             search={this.state.search}
             filter={this.state.filter}
-            onClick={this.onMarkerClick}
             name={report.animal}
-
+            onClick={this.test}
       >
-      <InfoWindow
-          marker={this.state.activeMarker}
-          onClose={this.onInfoWindowClose}
-          visible={this.state.showingInfoWindow}
-      >
-          <div>
-              <h4>{this.state.selectedPlace.name}</h4>
-          </div>
-      </InfoWindow>
       </Pins>));
 
     return pinItems;
@@ -146,7 +119,6 @@ class MapComponent extends React.Component {
               bootstrapURLKeys={{ key: Meteor.settings.public.googleMaps }}
               defaultCenter={this.props.center}
               defaultZoom={this.props.zoom}
-              onClick={this.onMapClicked}
           >
             {this.pinData()}
           </GoogleMapReact>

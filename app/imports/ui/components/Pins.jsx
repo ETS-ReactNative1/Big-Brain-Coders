@@ -34,6 +34,7 @@ class Pins extends React.Component {
           <ReactComponent
               lat={this.props.lat}
               lng={this.props.lng}
+              onClick={this.test}
               activeMarker={this.props.activeMarker}
               selectedPlace={this.props.selectedPlace}
               text={this.props.reports.animal}
