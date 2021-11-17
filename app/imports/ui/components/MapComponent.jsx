@@ -4,23 +4,27 @@ import GoogleMapReact from 'google-map-react';
 import InfoWindow from 'google-map-react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Dropdown, Label, Menu } from 'semantic-ui-react';
+import { Dropdown, Label, Menu, Popup } from 'semantic-ui-react';
 import { Reports } from '../../api/report/ReportCollection';
 import Pins from './Pins';
 
 class MapComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.test = this.test.bind(this);
     this.state = {
       search: '',
       filter: '',
+      popupActive: false,
+      buttonEl: null,
     };
   }
 
-  test() {
-    // eslint-disable-next-line no-undef
-      alert('Hello!');
+  onButtonHoverEnter = (event) => {
+    this.setState({ popupActive: true, buttonEl: event.target });
+  }
+
+  onPopupRequestClose = () => {
+    this.setState({ popupActive: false });
   }
 
   static optionsArray = [
@@ -75,8 +79,16 @@ class MapComponent extends React.Component {
             search={this.state.search}
             filter={this.state.filter}
             name={report.animal}
-            onClick={this.test}
-      >
+            onMouseEnter={this.onButtonHoverEnter}
+            >
+            <Popup
+                active={this.state.popupActive}
+                onRequestClose={this.onPopupRequestClose}
+                target={this.state.buttonEl}
+                >
+              Hello
+            </Popup>
+
       </Pins>));
 
     return pinItems;

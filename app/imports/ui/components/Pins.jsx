@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { Popup } from 'semantic-ui-react';
 
 /** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
 const K_WIDTH = 40;
@@ -29,16 +30,17 @@ const ReactComponent = () => <div style={greatPlaceStyle}>
     </div>;
 
 class Pins extends React.Component {
+
   render() {
       return (
-          <ReactComponent
+          <ReactComponent>
               lat={this.props.lat}
               lng={this.props.lng}
-              onClick={this.test}
-              activeMarker={this.props.activeMarker}
-              selectedPlace={this.props.selectedPlace}
               text={this.props.reports.animal}
-          />
+              buttonEl={this.props.buttonEl}
+              popupActive={this.props.popupActive}
+          </ReactComponent>
+
       );
   }
 }
@@ -48,8 +50,8 @@ Pins.propTypes = {
   reports: PropTypes.object.isRequired,
   search: PropTypes.string,
   filter: PropTypes.string,
-  activeMarker: PropTypes.string,
-  selectedPlace: PropTypes.string,
+  buttonEl: PropTypes.object,
+  popupActive: PropTypes.bool,
   lat: PropTypes.number.isRequired,
   lng: PropTypes.number.isRequired,
 };
