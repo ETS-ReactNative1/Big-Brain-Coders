@@ -1,0 +1,19 @@
+.landing  {
+background-size: cover;
+display: flex;
+align-items: center;
+justify-content: center;
+height: 100vh;
+margin: 0;
+}
+
+.landing-buttons{
+  margin-left: 15px;
+  margin-right: 0;
+}
+
+.divider{
+  width: 15px;
+  height: auto;
+  display: inline-block;
+}
