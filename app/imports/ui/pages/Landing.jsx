@@ -7,15 +7,23 @@ import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 import 'uniforms-bridge-simple-schema-2';
-import { AutoForm, ErrorsField, NumField, SubmitField, TextField, DateField, LongTextField } from 'uniforms-semantic';
+import { AutoForm, ErrorsField, NumField, SubmitField, TextField, LongTextField, AutoField, SelectField } from 'uniforms-semantic';
 import { reportDefineMethod } from '../../api/report/ReportCollection.methods';
 
 /** Create a schema to specify the structure of the data to appear in the report form. */
 const formSchema = new SimpleSchema({
-  date: String,
-  latitude: Number,
-  longitude: Number,
-  island: String,
+  latitude: {
+    type: String,
+    optional: true,
+  },
+  longitude: {
+    type: String,
+    optional: true,
+  },
+  island: {
+    type: String,
+    allowedValues: ['Oahu', 'Maui', 'Big Island', 'Kauai'],
+  },
   beachName: {
     type: String,
     optional: true,
@@ -24,7 +32,10 @@ const formSchema = new SimpleSchema({
     type: String,
     optional: true,
   },
-  animal: String,
+  animal: {
+    type: String,
+    allowedValues: ['Turtle', 'Seal', 'Seabird'],
+  },
   characteristics: String,
   behavior: String,
   numOfBeachgoers: Number,
@@ -39,16 +50,46 @@ class Landing extends React.Component {
     this.state = {
       image: '',
       loader: false,
+      latitude: 0,
+      longitude: 0,
     };
   }
 
   /** On submit, insert the data. */
-  submit(data, formRef) {
+  submitMobile(data, formRef) {
     // console.log('AddStuff.submit', data);
-    const { date, latitude, longitude, island, beachName, description, animal, characteristics,
+    this.shareLocation();
+    const { island, beachName, description, animal, characteristics,
       behavior, numOfBeachgoers, name, phoneNumber } = data;
    // const owner = Meteor.user().username;
     const imageUrl = this.state.image;
+    const date = new Date();
+    const longitude = this.state.longitude;
+    const latitude = this.state.latitude;
+    // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
+    reportDefineMethod.call({ date, latitude, longitude, island, beachName, description,
+          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl },
+        (error) => {
+          if (error) {
+            swal('Error', error.message, 'error');
+            // console.error(error.message);
+          } else {
+            swal('Success', 'Item added successfully', 'success');
+            formRef.reset();
+            this.setState({ image: '' });
+            // console.log('Success');
+          }
+        });
+  }
+
+  submitDesktop(data, formRef) {
+    // console.log('AddStuff.submit', data);
+    this.shareLocation();
+    const { longitude, latitude, island, beachName, description, animal, characteristics,
+      behavior, numOfBeachgoers, name, phoneNumber } = data;
+    // const owner = Meteor.user().username;
+    const imageUrl = this.state.image;
+    const date = new Date();
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
     reportDefineMethod.call({ date, latitude, longitude, island, beachName, description,
           animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl },
@@ -114,18 +155,16 @@ class Landing extends React.Component {
     }, options);
   }
 
-  openGallery = () => {
-    /** Function that creates opens the GALLERY and sets the state to the image
-     * NEED TO POST IMAGE TO CLOUDINARY AND SET STATE TO THAT URL INSTEAD OF LOCAL FILE */
-    const srcType = Camera.PictureSourceType.PHOTOLIBRARY;
-    const options = this.setOptions(srcType);
-
-    navigator.camera.getPicture(cameraSuccess = (imageUri) => {
-      this.uploadImg(imageUri);
-    }, cameraError = (error) => {
-      console.debug(`Unable to obtain picture: ${error}`, 'app');
-
-    }, options);
+  shareLocation = () => {
+    coords = navigator.geolocation.getCurrentPosition(success = (position) => {
+      console.log(position.coords.latitude, position.coords.longitude);
+      this.setState({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    }, error = (error) => {
+      console.debug(`Unable to obtain location: ${error}`);
+    }, { enableHighAccuracy: true });
   }
 
   render() {
@@ -134,17 +173,91 @@ class Landing extends React.Component {
       marginTop: '0px',
       paddingTop: '0px',
     };
+    if (Meteor.isCordova) {
+      // Beware really ugly code duplication.
+      // This is mobile view
+      return (
+          <Grid verticalAlign='middle' container centered stackable>
+            <Grid.Column width={14}>
+              <Header as="h2" textAlign="center">Add a Report</Header>
+              <Link to={'/map'}>Big Map</Link>
+              <AutoForm ref={ref => {
+                fRef = ref;
+              }} schema={formSchema} onSubmit={data => this.submitMobile(data, fRef)}>
+                <Segment>
+                  <Grid>
+                    <Grid.Row style={spacing}>
+                      <Grid.Column width={7}>
+                        <SelectField name='island'/>
+                      </Grid.Column>
+                      <Grid.Column width={9}>
+                        <AutoField name='beachName' label='Beach Name'/>
+                      </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Column width={16} style={spacing}>
+                      <LongTextField name='description'/>
+                    </Grid.Column>
+                    <Grid.Row style={spacing}>
+                      <Grid.Column width={8}>
+                        <AutoField name='animal'/>
+                      </Grid.Column>
+                      <Grid.Column width={8}>
+                        <TextField name='characteristics'/>
+                      </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Column width={16} style={spacing}>
+                      <LongTextField name='behavior'/>
+                    </Grid.Column>
+                    <Grid.Row style={spacing}>
+                      <Grid.Column width={3}>
+                        <NumField name='numOfBeachgoers' label='Number of Nearby People' decimal={false}/>
+                      </Grid.Column>
+                      <Grid.Column width={8}>
+                        <TextField name='name'/>
+                      </Grid.Column>
+                      <Grid.Column width={5}>
+                        <TextField name='phoneNumber'/>
+                      </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row style={spacing}>
+                      <Grid.Column width={8}>
+                        <Button
+                            attached='bottom'
+                            content='Take a picture'
+                            onClick={this.openCamera}
+                        />
+                        <Grid.Column floated='right'>
+                          {
+                            this.state.image &&
+                            <Image size='small' src={this.state.image}/>
+                          }
+                        </Grid.Column>
+                      </Grid.Column>
+                      <Grid.Column width={3}>
+                      </Grid.Column>
+                      <Grid.Column width={16}>
+                        <SubmitField value='Submit' style={{ marginTop: '20px' }}/>
+                      </Grid.Column>
+                    </Grid.Row>
+                    <ErrorsField/>
+                  </Grid>
+                </Segment>
+              </AutoForm>
+            </Grid.Column>
+          </Grid>
+      );
+    }
     return (
+        // This is desktop view
         <Grid verticalAlign='middle' container centered stackable>
           <Grid.Column width={14}>
             <Header as="h2" textAlign="center">Add a Report</Header>
             <Link to={'/map'}>Big Map</Link>
             <AutoForm ref={ref => {
               fRef = ref;
-            }} schema={formSchema} onSubmit={data => this.submit(data, fRef)}>
+            }} schema={formSchema} onSubmit={data => this.submitDesktop(data, fRef)}>
               <Segment>
                 <Grid>
-                  <DateField name='date' label='Date and Time' style={{ marginTop: '20px' }}/>
                   <Grid.Row style={spacing}>
                     <Grid.Column width={8}>
                       <NumField name='latitude'/>
@@ -188,14 +301,6 @@ class Landing extends React.Component {
                   </Grid.Row>
                   <Grid.Row style={spacing}>
                     <Grid.Column width={8}>
-                      {
-                        Meteor.isCordova === true &&
-                        <Button
-                            attached='bottom'
-                            content='Take a picture'
-                            onClick={this.openCamera}
-                        />
-                      }
                       <p style={{ marginBottom: '5px', fontSize: '13px' }}><strong>Upload Image</strong>
                         <strong style={{ color: '#DA2828' }}> *</strong>
                       </p>
@@ -209,19 +314,11 @@ class Landing extends React.Component {
                             this.setState({ loader: true });
                           }}
                       />
-                      {
-                        Meteor.isCordova === true &&
-                        <Button
-                            attached='bottom'
-                            content='Upload an image from gallery.'
-                            onClick={this.openGallery}
-                        />
-                      }
                       <Grid.Column floated='right'>
                         { this.state.loader === true &&
-                          <Header as='h4' style={{ marginTop: '5px' }}>
-                            <Icon loading name='spinner' size='small' color='green'/>Image uploading
-                            </Header>
+                        <Header as='h4' style={{ marginTop: '5px' }}>
+                          <Icon loading name='spinner' size='small' color='green'/>Image uploading
+                        </Header>
                         }
                         {
                           this.state.image &&
