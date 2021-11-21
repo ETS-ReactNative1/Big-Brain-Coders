@@ -24,15 +24,14 @@ class FirstLanding extends React.Component {
     const spacing = {
       paddingTop: 0,
     };
-    const imageStyle = {
-      boxShadow: '15px',
-    };
+
     return (
         <div className="landing">
         <Grid verticalAlign='middle' stackable container>
           <Grid.Row columns={2} style={spacing}>
             <Grid.Column computer={9}>
-              <Header style={header} inverted>Saving Hawaii&apos;s marine wildlife <br/> one animal at a time.</Header>
+              <Header style={header} inverted>Saving Hawaii&apos;s marine wildlife<br/>
+                one animal at a time.</Header>
               <List style={listSpacing}>
                 <ListItem>
                   <ListHeader style={listColor}>Report a Sighting</ListHeader>
