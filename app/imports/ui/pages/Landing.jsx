@@ -2,8 +2,9 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import swal from 'sweetalert';
-import { Grid, Image, Button, Header, Segment, Icon } from 'semantic-ui-react';
+import { Grid, Image, Header, Segment, Icon, Button } from 'semantic-ui-react';
 import Axios from 'axios';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Link } from 'react-router-dom';
 import SimpleSchema from 'simpl-schema';
 import 'uniforms-bridge-simple-schema-2';
@@ -22,11 +23,11 @@ import { reportDefineMethod } from '../../api/report/ReportCollection.methods';
 /** Create a schema to specify the structure of the data to appear in the report form. */
 const formSchema = new SimpleSchema({
   latitude: {
-    type: String,
+    type: Number,
     optional: true,
   },
   longitude: {
-    type: String,
+    type: Number,
     optional: true,
   },
   island: {
@@ -50,6 +51,7 @@ const formSchema = new SimpleSchema({
   numOfBeachgoers: Number,
   name: String,
   phoneNumber: String,
+  owner: String,
 });
 
 /** A simple static component to render some text for the landing page. */
@@ -58,9 +60,11 @@ class Landing extends React.Component {
     super(props);
     this.state = {
       image: '',
-      loader: false,
-      latitude: 0,
-      longitude: 0,
+      loader1: false,
+      loader2: false,
+      latitude: '',
+      longitude: '',
+      owner: '',
     };
   }
 
@@ -70,9 +74,8 @@ class Landing extends React.Component {
     this.shareLocation();
     const {
       island, beachName, description, animal, characteristics,
-      behavior, numOfBeachgoers, name, phoneNumber,
+      behavior, numOfBeachgoers, name, phoneNumber, owner,
     } = data;
-    // const owner = Meteor.user().username;
     const imageUrl = this.state.image;
     const date = new Date();
     const longitude = this.state.longitude;
@@ -80,7 +83,7 @@ class Landing extends React.Component {
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
     reportDefineMethod.call({
           date, latitude, longitude, island, beachName, description,
-          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl,
+          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl, owner,
         },
         (error) => {
           if (error) {
@@ -97,18 +100,26 @@ class Landing extends React.Component {
 
   submitDesktop(data, formRef) {
     // console.log('AddStuff.submit', data);
-    this.shareLocation();
+    // this.shareLocation();
     const {
-      longitude, latitude, island, beachName, description, animal, characteristics,
-      behavior, numOfBeachgoers, name, phoneNumber,
+      latitude, longitude, island, beachName, description, animal, characteristics,
+      behavior, numOfBeachgoers, name, phoneNumber, owner,
     } = data;
-    // const owner = Meteor.user().username;
     const imageUrl = this.state.image;
     const date = new Date();
+    let getLat = '';
+    let getLong = '';
+    if (this.state.latitude && this.state.longitude) {
+      getLat = this.state.latitude;
+      getLong = this.state.longitude;
+    } else {
+      getLat = latitude;
+      getLong = longitude;
+    }
     // console.log(`{ ${name}, ${quantity}, ${condition}, ${owner} }`);
     reportDefineMethod.call({
-          date, latitude, longitude, island, beachName, description,
-          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl,
+          date, getLat, getLong, island, beachName, description,
+          animal, characteristics, behavior, numOfBeachgoers, name, phoneNumber, imageUrl, owner,
         },
         (error) => {
           if (error) {
@@ -138,7 +149,7 @@ class Landing extends React.Component {
     Axios.post('https://api.cloudinary.com/v1_1/glarita/image/upload', data).then((res) => {
       console.log(res.data.url);
       this.setState({ image: res.data.url });
-      this.setState({ loader: false });
+      this.setState({ loader2: false });
     });
   };
 
@@ -172,6 +183,11 @@ class Landing extends React.Component {
     }, options);
   }
 
+  showPosition = (position) => {
+    this.setState({ latitude: position.coords.latitude });
+    this.setState({ longitude: position.coords.longitude });
+  }
+
   shareLocation = () => {
     coords = navigator.geolocation.getCurrentPosition(success = (position) => {
       console.log(position.coords.latitude, position.coords.longitude);
@@ -189,6 +205,29 @@ class Landing extends React.Component {
     const spacing = {
       marginTop: '0px',
       paddingTop: '0px',
+    };
+    const button = {
+      borderRadius: '10px',
+      backgroundColor: '#298EC2',
+      color: 'white',
+      padding: '12px',
+    };
+    const containerStyle = {
+      width: '400px',
+      height: '400px',
+    };
+
+    const center = {
+      lat: 37.772,
+      lng: -122.214,
+    };
+    const position = {
+      lat: 37.772,
+      lng: -122.214,
+    };
+
+    const onLoad = marker => {
+      console.log('marker: ', marker);
     };
     if (Meteor.isCordova) {
       // Beware really ugly code duplication.
@@ -286,6 +325,48 @@ class Landing extends React.Component {
                         <NumField name='longitude'/>
                       </Grid.Column>
                     </Grid.Row>
+                    <Grid.Row style={spacing} centered columns={1}>
+                      <Grid.Column>
+                        <Button onClick={() => {
+                          if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(this.showPosition);
+                            this.setState({ loader1: true });
+                          } else {
+                            x.innerHTML = 'Geolocation is not supported by this browser.';
+                          }
+                        }
+                        } type='button' size='small' style={button}>Use Current Location</Button>
+                        {this.state.loader1 === true && !this.state.latitude && !this.state.longitude &&
+                        <Header as='h4' style={{ marginTop: '5px' }}>
+                          <Icon loading name='spinner' size='small' color='green'/>Locating..
+                        </Header>
+                        }
+                        {this.state.latitude && this.state.longitude &&
+                        <Header as='h4' style={{ marginTop: '15px' }}>
+                          Latitude: {this.state.latitude}, Longitude: {this.state.longitude}
+                        </Header>
+                        }
+                        <LoadScript
+                            googleMapsApiKey="AIzaSyDhBkwVGUxSvmwjOzUhxpyyT56N26kNFLE"
+                        >
+                          <GoogleMap
+                              mapContainerStyle={containerStyle}
+                              center={center}
+                              zoom={10}
+                              onClick={ (e) => { console.log(e.latLng.lat(), e.latLng.lng()); }}
+                          >
+                            { /* Child components, such as markers, info windows, etc. */ }
+                            <></>
+                            <Marker
+                                onLoad={onLoad}
+                                position={position}
+                                draggable={true}
+                                onDrag={(e) => { console.log(e.latLng.lat(), e.latLng.lng()); }}
+                            />
+                          </GoogleMap>
+                        </LoadScript>
+                      </Grid.Column>
+                    </Grid.Row>
                     <Grid.Row style={spacing}>
                       <Grid.Column width={7}>
                         <TextField name='island'/>
@@ -331,11 +412,11 @@ class Landing extends React.Component {
                             id="files"
                             onChange={(event) => {
                               this.uploadImg(event.target.files);
-                              this.setState({ loader: true });
+                              this.setState({ loader2: true });
                             }}
                         />
                         <Grid.Column floated='right'>
-                          {this.state.loader === true &&
+                          {this.state.loader2 === true &&
                           <Header as='h4' style={{ marginTop: '5px' }}>
                             <Icon loading name='spinner' size='small' color='green'/>Image uploading
                           </Header>
@@ -346,7 +427,8 @@ class Landing extends React.Component {
                           }
                         </Grid.Column>
                       </Grid.Column>
-                      <Grid.Column width={3}>
+                      <Grid.Column width={8}>
+                        <TextField name='owner' label='Email'/>
                       </Grid.Column>
                       <Grid.Column width={16}>
                         <SubmitField value='Submit' style={{ marginTop: '20px' }}/>
