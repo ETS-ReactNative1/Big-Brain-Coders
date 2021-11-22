@@ -2,7 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import swal from 'sweetalert';
-import { Grid, Image, Header, Segment, Icon, Button } from 'semantic-ui-react';
+import { Grid, Image, Header, Segment, Icon, Button, Modal } from 'semantic-ui-react';
 import Axios from 'axios';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { Link } from 'react-router-dom';
@@ -65,6 +65,7 @@ class Landing extends React.Component {
       latitude: '',
       longitude: '',
       owner: '',
+      open: false,
     };
   }
 
@@ -213,19 +214,22 @@ class Landing extends React.Component {
       padding: '12px',
     };
     const containerStyle = {
-      width: '400px',
-      height: '400px',
+      width: '858px',
+      height: '600px',
     };
-
     const center = {
-      lat: 37.772,
-      lng: -122.214,
+      lat: 21.45076858088362,
+      lng: -158.00057723373996,
     };
     const position = {
-      lat: 37.772,
-      lng: -122.214,
+      lat: this.state.latitude,
+      lng: this.state.longitude,
     };
-
+    const buttons = {
+      padding: '14px',
+      backgroundColor: '#6B94A4',
+      color: 'white',
+    };
     const onLoad = marker => {
       console.log('marker: ', marker);
     };
@@ -346,25 +350,44 @@ class Landing extends React.Component {
                           Latitude: {this.state.latitude}, Longitude: {this.state.longitude}
                         </Header>
                         }
-                        <LoadScript
-                            googleMapsApiKey={Meteor.settings.public.googleMapsKEY}
+
+                        <Modal
+                            onClose={() => this.setState({ open: false })}
+                            onOpen={() => this.setState({ open: true })}
+                            open={this.open}
+                            trigger={<Button size='large' style={buttons} type='button'>Choose Location</Button>}
                         >
-                          <GoogleMap
-                              mapContainerStyle={containerStyle}
-                              center={center}
-                              zoom={10}
-                              onClick={ (e) => { console.log(e.latLng.lat(), e.latLng.lng()); }}
-                          >
-                            { /* Child components, such as markers, info windows, etc. */ }
-                            <></>
-                            <Marker
-                                onLoad={onLoad}
-                                position={position}
-                                draggable={true}
-                                onDrag={(e) => { console.log(e.latLng.lat(), e.latLng.lng()); }}
-                            />
-                          </GoogleMap>
-                        </LoadScript>
+                          <Modal.Header>Choose Location</Modal.Header>
+                          <Modal.Content image>
+                            <Modal.Description>
+                              <LoadScript
+                                  googleMapsApiKey={Meteor.settings.public.googleMapsKEY}
+                              >
+                                <div className='modal'>
+                                  <GoogleMap
+                                      mapContainerStyle={containerStyle}
+                                      center={center}
+                                      zoom={10}
+                                      onClick={(e) => {
+                                        console.log(e.latLng.lat(), e.latLng.lng());
+                                      }}
+                                  >
+                                    { /* Child components, such as markers, info windows, etc. */}
+                                    <></>
+                                    <Marker
+                                        onLoad={onLoad}
+                                        position={position}
+                                        draggable={true}
+                                        onDrag={(e) => {
+                                          console.log(e.latLng.lat(), e.latLng.lng());
+                                        }}
+                                    />
+                                  </GoogleMap>
+                                </div>
+                              </LoadScript>
+                            </Modal.Description>
+                          </Modal.Content>
+                        </Modal>
                       </Grid.Column>
                     </Grid.Row>
                     <Grid.Row style={spacing}>
