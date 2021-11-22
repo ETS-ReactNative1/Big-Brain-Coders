@@ -347,7 +347,7 @@ class Landing extends React.Component {
                         </Header>
                         }
                         <LoadScript
-                            googleMapsApiKey="AIzaSyDhBkwVGUxSvmwjOzUhxpyyT56N26kNFLE"
+                            googleMapsApiKey={Meteor.settings.public.googleMapsKEY}
                         >
                           <GoogleMap
                               mapContainerStyle={containerStyle}
