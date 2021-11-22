@@ -3,6 +3,7 @@ import { Modal, Button, Header } from 'semantic-ui-react';
 // import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { Meteor } from 'meteor/meteor';
 
 /** Renders a single row in the List Stuff table. See pages/ListStuff.jsx. */
 class ReportModal extends React.Component {
@@ -31,7 +32,7 @@ class ReportModal extends React.Component {
           <Modal.Content image>
             <Modal.Description>
               <LoadScript
-                  googleMapsApiKey="AIzaSyDhBkwVGUxSvmwjOzUhxpyyT56N26kNFLE"
+                  googleMapsApiKey={Meteor.settings.public.googleMapsKEY}
               >
                 <GoogleMap
                     mapContainerStyle={containerStyle}
