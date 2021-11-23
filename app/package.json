@@ -9,6 +9,7 @@
     "cross-env": "^7.0.3",
     "google-map-react": "^2.1.10",
     "graphql": "^15.5.1",
+    "json2csv": "^5.0.6",
     "meteor-node-stubs": "^1.0.3",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
