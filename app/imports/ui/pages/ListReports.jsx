@@ -40,8 +40,8 @@ class ListReports extends React.Component {
   /** Render the page once subscriptions have been received. */
   renderPage() {
     return (
-        <Container>
-          <Header as="h2" textAlign="center">Reports</Header>
+        <Container style={{ marginTop: '50px' }}>
+          <Header as="h2" textAlign="center" inverted>Reports</Header>
           <Table celled>
             <Table.Header>
               <Table.Row>
