@@ -2,7 +2,6 @@ import React from 'react';
 import { Container, Table, Header, Loader, Button } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
-import { Stuffs } from '../../api/stuff/StuffCollection';
 import { Reports } from '../../api/report/ReportCollection';
 import ReportItem from '../components/ReportItem';
 
@@ -52,9 +51,6 @@ class ListReports extends React.Component {
                 <Table.HeaderCell>Beach Name</Table.HeaderCell>
                 <Table.HeaderCell>Characteristics</Table.HeaderCell>
                 <Table.HeaderCell>Behavior</Table.HeaderCell>
-
-
-
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -67,23 +63,19 @@ class ListReports extends React.Component {
   }
 }
 
-/** Require an array of Stuff documents in the props. */
+/** Require an array of Report documents in the props. */
 ListReports.propTypes = {
-  stuffs: PropTypes.array.isRequired,
   reports: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
-  // Get access to Stuff documents.
-  const subscription = Stuffs.subscribeStuff();
-  const subscription2 = Reports.subscribeReportAdmin();
+  // Get access to Report documents.
+  const subscription = Reports.subscribeReportAdmin();
   const reports =  Reports.find({}).fetch();
-  console.log(reports);
   return {
-    stuffs: Stuffs.find({}).fetch(),
     reports,
-    ready: subscription.ready() && subscription2.ready(),
+    ready: subscription.ready(),
   };
 })(ListReports);
