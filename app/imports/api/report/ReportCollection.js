@@ -14,9 +14,19 @@ class ReportCollection extends BaseCollection {
     constructor() {
         super('Reports', new SimpleSchema({
             date: String,
-            latitude: Number,
-            longitude: Number,
-            island: String,
+            latitude: {
+              type: Number,
+              optional: true,
+            },
+            longitude: {
+              type: Number,
+              optional: true,
+            },
+          island: {
+            type: String,
+            allowedValues: ['Big Island', 'Oahu', 'Maui', 'Molokai', 'Kauai', 'Lanai', 'Niihau', 'Kahoolawe'],
+            defaultValue: 'Oahu',
+          },
             beachName: {
                 type: String,
                 optional: true,
@@ -25,7 +35,11 @@ class ReportCollection extends BaseCollection {
                 type: String,
                 optional: true,
             },
-            animal: String,
+          animal: {
+            type: String,
+            allowedValues: ['Monk Seal', 'Sea Turtle', 'Dolphin', 'Whale', 'Seabird'],
+            defaultValue: 'Monk Seal',
+          },
             characteristics: String,
             behavior: String,
             numOfBeachgoers: Number,
