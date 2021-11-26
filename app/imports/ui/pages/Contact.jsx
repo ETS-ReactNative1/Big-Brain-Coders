@@ -26,7 +26,7 @@ class Contact extends React.Component {
   render() {
     return (
         <Container id='contact-page'>
-          <Tab panes={this.panes} id='tabs'/>
+          <Tab menu={{ fluid: true, stackable: true, tabular: true }} panes={this.panes} id='tabs'/>
         </Container>
     );
   }
