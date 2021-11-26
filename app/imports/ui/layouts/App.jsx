@@ -18,6 +18,7 @@ import Signup from '../pages/Signup';
 import Signout from '../pages/Signout';
 import MapComponent from '../components/MapComponent';
 import ListReports from '../pages/ListReports';
+import Contact from '../pages/Contact';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 class App extends React.Component {
@@ -29,6 +30,7 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/" component={FirstLanding}/>
               <Route exact path="/report" component={Landing}/>
+              <Route exact path="/contact" component={Contact}/>
               <Route path="/signin" component={Signin}/>
               <Route path="/signup" component={Signup}/>
               <Route path="/map" component={MapComponent}/>

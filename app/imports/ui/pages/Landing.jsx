@@ -44,7 +44,7 @@ const formSchema = new SimpleSchema({
   },
   animal: {
     type: String,
-    allowedValues: ['Monk Seal', 'Sea Turtle', 'Dolphin', 'Whale', 'Seabird'],
+    allowedValues: ['Monk Seal', 'Sea Turtle', 'Seabird'],
     defaultValue: 'Monk Seal',
   },
   characteristics: String,

@@ -34,6 +34,9 @@ class ReportModal extends React.Component {
                 If you see an animal in distress, entangled, or injured,
                 please contact the <br/>  Hawaii Marine Animal Response hotline at: <br/>
                 <b>(888) 256-9840</b>
+                <br/>
+                <br/>
+                For more information, please see our <b>Contact</b> page.
               </p>
             </Modal.Description>
           </Modal.Content>
