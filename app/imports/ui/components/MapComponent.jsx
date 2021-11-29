@@ -30,6 +30,7 @@ class MapComponent extends React.Component {
       openInfoWindowMarkerId: markerId,
       isOpen: true,
     });
+    console.log(markerId);
   }
 
   handleToggleClose = () => {
@@ -140,16 +141,17 @@ class MapComponent extends React.Component {
                   center={this.state.center}
                   zoom={this.state.zoom}
               >
-                {this.props.reports.map(marker => (
+                {this.props.reports.map((marker, index) => (
                     <Marker
                         position={{ lat: marker.latitude, lng: marker.longitude }}
-                        key={marker.id}
-                        onClick={() => this.handleToggleOpen(marker.id)}
+                        key={index}
+                        onClick={() => this.handleToggleOpen(index)}
                         name={this.props.reports.animal}>
+
                       {
                         this.state.isOpen &&
                         <InfoWindow
-                            key={marker.id}
+                            key={index}
                             onCloseClick={() => this.handleToggleClose()}>
                           <div>
                           <span>{marker.animal}</span>
