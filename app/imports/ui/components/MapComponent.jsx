@@ -1,9 +1,10 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import GoogleMapReact from 'google-map-react';
+// import GoogleMapReact from 'google-map-react';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Dropdown, Label, Menu, Popup } from 'semantic-ui-react';
+import { Dropdown, Label, Menu } from 'semantic-ui-react';
 import { Reports } from '../../api/report/ReportCollection';
 import Pins from './Pins';
 
@@ -13,18 +14,36 @@ class MapComponent extends React.Component {
     this.state = {
       search: '',
       filter: '',
-      popupActive: false,
-      buttonEl: null,
+      activeMarker: {},
+      selectedPlace: {},
+      showingInfoWindow: false,
+      zoom: 10,
+      center: {
+        lat: 21.45076858088362,
+        lng: -158.00057723373996,
+      },
     };
   }
 
-  onButtonHoverEnter = (event) => {
-    this.setState({ popupActive: true, buttonEl: event.target });
-  }
+  onMarkerClick = (props, marker) => this.setState({
+    activeMarker: marker,
+    selectedPlace: props,
+    showingInfoWindow: true,
+  });
 
-  onPopupRequestClose = () => {
-    this.setState({ popupActive: false });
-  }
+  onInfoWindowClose = () => this.setState({
+    activeMarker: null,
+    showingInfoWindow: false,
+  });
+
+  onMapClicked = () => {
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        activeMarker: null,
+        showingInfoWindow: false,
+      });
+    }
+  };
 
   static optionsArray = [
     {
@@ -77,16 +96,9 @@ class MapComponent extends React.Component {
             reports={report}
             search={this.state.search}
             filter={this.state.filter}
+            onClick={this.onMarkerClick}
             name={report.animal}
-            onMouseEnter={this.onButtonHoverEnter}
             >
-            <Popup
-                active={this.state.popupActive}
-                onRequestClose={this.onPopupRequestClose}
-                target={this.state.buttonEl}
-                >
-              Hello
-            </Popup>
 
       </Pins>));
 
@@ -102,6 +114,10 @@ class MapComponent extends React.Component {
   };
 
   render() {
+    const containerStyle = {
+      width: '858px',
+      height: '600px',
+    };
     return (
         // Important! Always set the container height explicitly
         <div style={{ height: '100vh', width: '100%' }}>
@@ -126,13 +142,26 @@ class MapComponent extends React.Component {
             />
           </Menu.Item>
 
-          <GoogleMapReact
-              bootstrapURLKeys={{ key: Meteor.settings.public.googleMaps }}
-              defaultCenter={this.props.center}
-              defaultZoom={this.props.zoom}
+          <LoadScript
+              googleMapsApiKey={Meteor.settings.public.googleMapsKEY}
           >
-            {this.pinData()}
-          </GoogleMapReact>
+            <div>
+              <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={this.state.center}
+                  zoom={this.state.zoom}
+              >
+                {this.props.reports.map(marker => (
+                    <Marker
+                        position={{ lat: marker.latitude, lng: marker.longitude }}
+                        key={marker.id}
+                    />
+                ))}
+                { /* Child components, such as markers, info windows, etc. */}
+                <></>
+              </GoogleMap>
+            </div>
+          </LoadScript>
         </div>
     );
   }
