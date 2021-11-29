@@ -1,0 +1,29 @@
+.landing {
+  background: url('../images/turtle.jpeg')no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  opacity: 1;
+}
+
+.landing-buttons {
+  margin-left: 15px;
+  margin-right: 0;
+}
+
+.divider {
+  width: 15px;
+  height: auto;
+  display: inline-block;
+}
+
+.landing-report {
+  box-shadow: 0px 0px 15px black;
+}
+
+.modal {
+  display: flex;
+}

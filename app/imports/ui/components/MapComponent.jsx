@@ -1,7 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import GoogleMapReact from 'google-map-react';
-import InfoWindow from 'google-map-react';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Dropdown, Label, Menu, Popup } from 'semantic-ui-react';
@@ -148,8 +147,13 @@ MapComponent.propTypes = {
 export default withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Reports.subscribeReport();
+  const subscription2 = Reports.subscribeReportAdmin();
+  const ready = subscription.ready();
+  const ready2 = subscription2.ready();
+
   return {
     reports: Reports.find({}).fetch(),
-    ready: subscription.ready(),
+    ready,
+    ready2,
   };
 })(MapComponent);
