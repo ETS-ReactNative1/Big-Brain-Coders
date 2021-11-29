@@ -4,9 +4,9 @@ import { Meteor } from 'meteor/meteor';
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import {Dropdown, Image, Label, Menu} from 'semantic-ui-react';
+import { Dropdown, Image, Label, Menu } from 'semantic-ui-react';
 import { Reports } from '../../api/report/ReportCollection';
-import Pins from './Pins';
+// import Pins from './Pins';
 
 class MapComponent extends React.Component {
   constructor(props) {
@@ -149,7 +149,7 @@ class MapComponent extends React.Component {
                         name={this.props.reports.animal}>
 
                       {
-                        this.state.isOpen &&
+                        this.state.isOpen && this.state.openInfoWindowMarkerId === index &&
                         <InfoWindow
                             key={index}
                             onCloseClick={() => this.handleToggleClose()}>
