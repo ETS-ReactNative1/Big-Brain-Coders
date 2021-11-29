@@ -154,14 +154,18 @@ class MapComponent extends React.Component {
                 {this.props.reports.map(marker => (
                     <Marker
                         position={{ lat: marker.latitude, lng: marker.longitude }}
-                        key={marker.id} >
+                        key={marker.id}
+                        onClick={this.onMarkerClick}
+                        name={this.props.reports.animal}>
                       <InfoWindow
+                          position={{ lat: marker.latitude, lng: marker.longitude }}
+                          key={marker.id}
                           marker={this.state.activeMarker}
                           onClose={this.onInfoWindowClose}
                           visible={this.state.showingInfoWindow}
                       >
                         <div>
-                          <h4>{this.state.selectedPlace.name}</h4>
+                          <h4>{this.props.reports.animal}</h4>
                         </div>
                       </InfoWindow>
                     </Marker>
