@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Dropdown, Label, Menu } from 'semantic-ui-react';
+import {Dropdown, Image, Label, Menu} from 'semantic-ui-react';
 import { Reports } from '../../api/report/ReportCollection';
 import Pins from './Pins';
 
@@ -14,9 +14,8 @@ class MapComponent extends React.Component {
     this.state = {
       search: '',
       filter: '',
-      activeMarker: {},
-      selectedPlace: {},
-      showingInfoWindow: false,
+      openInfoWindowMarkerId: '',
+      isOpen: false,
       zoom: 10,
       center: {
         lat: 21.45076858088362,
@@ -25,25 +24,19 @@ class MapComponent extends React.Component {
     };
   }
 
-  onMarkerClick = (props, marker) => this.setState({
-    activeMarker: marker,
-    selectedPlace: props,
-    showingInfoWindow: true,
-  });
+  handleToggleOpen = (markerId) => {
 
-  onInfoWindowClose = () => this.setState({
-    activeMarker: null,
-    showingInfoWindow: false,
-  });
+    this.setState({
+      openInfoWindowMarkerId: markerId,
+      isOpen: true,
+    });
+  }
 
-  onMapClicked = () => {
-    if (this.state.showingInfoWindow) {
-      this.setState({
-        activeMarker: null,
-        showingInfoWindow: false,
-      });
-    }
-  };
+  handleToggleClose = () => {
+    this.setState({
+      isOpen: false,
+    });
+  }
 
   static optionsArray = [
     {
@@ -88,7 +81,7 @@ class MapComponent extends React.Component {
       }
       return null;
     }).map(report => (
-      <Pins key={report._id}
+      <Marker key={report._id}
             lat={report.latitude}
             lng={report.longitude}
             date={report.date}
@@ -100,16 +93,12 @@ class MapComponent extends React.Component {
             name={report.animal}
             >
 
-      </Pins>));
+      </Marker>));
 
     return pinItems;
   }
 
   static defaultProps = {
-    center: {
-      lat: 21.330970673074834,
-      lng: -157.69216914705936,
-    },
     zoom: 11,
   };
 
@@ -155,19 +144,19 @@ class MapComponent extends React.Component {
                     <Marker
                         position={{ lat: marker.latitude, lng: marker.longitude }}
                         key={marker.id}
-                        onClick={this.onMarkerClick}
+                        onClick={() => this.handleToggleOpen(marker.id)}
                         name={this.props.reports.animal}>
-                      <InfoWindow
-                          position={{ lat: marker.latitude, lng: marker.longitude }}
-                          key={marker.id}
-                          marker={this.state.activeMarker}
-                          onClose={this.onInfoWindowClose}
-                          visible={this.state.showingInfoWindow}
-                      >
-                        <div>
-                          <h4>{this.props.reports.animal}</h4>
-                        </div>
-                      </InfoWindow>
+                      {
+                        this.state.isOpen &&
+                        <InfoWindow
+                            key={marker.id}
+                            onCloseClick={() => this.handleToggleClose()}>
+                          <div>
+                          <span>{marker.animal}</span>
+                          <Image size='small' src={marker.imageUrl}/>
+                          </div>
+                        </InfoWindow>
+                      }
                     </Marker>
                 ))}
                 { /* Child components, such as markers, info windows, etc. */}
