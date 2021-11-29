@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 // import GoogleMapReact from 'google-map-react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Dropdown, Label, Menu } from 'semantic-ui-react';
@@ -154,8 +154,17 @@ class MapComponent extends React.Component {
                 {this.props.reports.map(marker => (
                     <Marker
                         position={{ lat: marker.latitude, lng: marker.longitude }}
-                        key={marker.id}
-                    />
+                        key={marker.id} >
+                      <InfoWindow
+                          marker={this.state.activeMarker}
+                          onClose={this.onInfoWindowClose}
+                          visible={this.state.showingInfoWindow}
+                      >
+                        <div>
+                          <h4>{this.state.selectedPlace.name}</h4>
+                        </div>
+                      </InfoWindow>
+                    </Marker>
                 ))}
                 { /* Child components, such as markers, info windows, etc. */}
                 <></>
