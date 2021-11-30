@@ -1,12 +1,10 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-// import GoogleMapReact from 'google-map-react';
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Dropdown, Image, Label, Menu } from 'semantic-ui-react';
 import { Reports } from '../../api/report/ReportCollection';
-// import Pins from './Pins';
 
 class MapComponent extends React.Component {
   constructor(props) {
@@ -30,7 +28,6 @@ class MapComponent extends React.Component {
       openInfoWindowMarkerId: markerId,
       isOpen: true,
     });
-    console.log(markerId);
   }
 
   handleToggleClose = () => {
@@ -61,43 +58,6 @@ class MapComponent extends React.Component {
       value: 'Animal',
     },
   ];
-
-  pinData() {
-    const pinItems = this.props.reports.filter((value) => {
-      if (this.state.filter === 'All' || this.state.filter === '') {
-        return value;
-      }
-      if (this.state.filter === 'Date') {
-        if (value.date.toLowerCase().includes(this.state.search.toLowerCase())) {
-          return value;
-        }
-      } else if (this.state.filter === 'Island') {
-        if (value.island.toString().toLowerCase().includes(this.state.search.toLowerCase())) {
-          return value;
-        }
-      } else if (this.state.filter === 'Animal') {
-        if (value.animal.toString().toLowerCase().includes(this.state.search.toLowerCase())) {
-          return value;
-        }
-      }
-      return null;
-    }).map(report => (
-      <Marker key={report._id}
-            lat={report.latitude}
-            lng={report.longitude}
-            date={report.date}
-            text={report.animal}
-            reports={report}
-            search={this.state.search}
-            filter={this.state.filter}
-            onClick={this.onMarkerClick}
-            name={report.animal}
-            >
-
-      </Marker>));
-
-    return pinItems;
-  }
 
   static defaultProps = {
     zoom: 11,
@@ -141,7 +101,25 @@ class MapComponent extends React.Component {
                   center={this.state.center}
                   zoom={this.state.zoom}
               >
-                {this.props.reports.map((marker, index) => (
+                { this.props.reports.filter((value) => {
+                  if (this.state.filter === 'All' || this.state.filter === '') {
+                  return value;
+                }
+                  if (this.state.filter === 'Date') {
+                  if (value.date.toLowerCase().includes(this.state.search.toLowerCase())) {
+                  return value;
+                }
+                } else if (this.state.filter === 'Island') {
+                  if (value.island.toString().toLowerCase().includes(this.state.search.toLowerCase())) {
+                  return value;
+                }
+                } else if (this.state.filter === 'Animal') {
+                  if (value.animal.toString().toLowerCase().includes(this.state.search.toLowerCase())) {
+                  return value;
+                }
+                }
+                  return null;
+                }).map((marker, index) => (
                     <Marker
                         position={{ lat: marker.latitude, lng: marker.longitude }}
                         key={index}
@@ -161,7 +139,6 @@ class MapComponent extends React.Component {
                       }
                     </Marker>
                 ))}
-                { /* Child components, such as markers, info windows, etc. */}
                 <></>
               </GoogleMap>
             </div>
