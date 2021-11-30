@@ -1,11 +1,12 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import GoogleMapReact from 'google-map-react';
+// import GoogleMapReact from 'google-map-react';
+import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Dropdown, Label, Menu } from 'semantic-ui-react';
+import { Dropdown, Image, Label, Menu } from 'semantic-ui-react';
 import { Reports } from '../../api/report/ReportCollection';
-import Pins from './Pins';
+// import Pins from './Pins';
 
 class MapComponent extends React.Component {
   constructor(props) {
@@ -13,7 +14,29 @@ class MapComponent extends React.Component {
     this.state = {
       search: '',
       filter: '',
+      openInfoWindowMarkerId: '',
+      isOpen: false,
+      zoom: 10,
+      center: {
+        lat: 21.45076858088362,
+        lng: -158.00057723373996,
+      },
     };
+  }
+
+  handleToggleOpen = (markerId) => {
+
+    this.setState({
+      openInfoWindowMarkerId: markerId,
+      isOpen: true,
+    });
+    console.log(markerId);
+  }
+
+  handleToggleClose = () => {
+    this.setState({
+      isOpen: false,
+    });
   }
 
   static optionsArray = [
@@ -59,29 +82,32 @@ class MapComponent extends React.Component {
       }
       return null;
     }).map(report => (
-      <Pins key={report._id}
+      <Marker key={report._id}
             lat={report.latitude}
             lng={report.longitude}
-            onClick={this.onMarkerClick}
             date={report.date}
             text={report.animal}
             reports={report}
             search={this.state.search}
             filter={this.state.filter}
-      />));
+            onClick={this.onMarkerClick}
+            name={report.animal}
+            >
+
+      </Marker>));
 
     return pinItems;
   }
 
   static defaultProps = {
-    center: {
-      lat: 21.330970673074834,
-      lng: -157.69216914705936,
-    },
     zoom: 11,
   };
 
   render() {
+    const containerStyle = {
+      width: '1450px',
+      height: '720px',
+    };
     return (
         // Important! Always set the container height explicitly
         <div style={{ height: '100vh', width: '100%' }}>
@@ -105,14 +131,41 @@ class MapComponent extends React.Component {
                 }}
             />
           </Menu.Item>
-          <GoogleMapReact
-              bootstrapURLKeys={{ key: Meteor.settings.public.googleMaps }}
-              defaultCenter={this.props.center}
-              defaultZoom={this.props.zoom}
-              onClick={this.onMapClicked}
+
+          <LoadScript
+              googleMapsApiKey={Meteor.settings.public.googleMapsKEY}
           >
-            {this.pinData()}
-          </GoogleMapReact>
+            <div>
+              <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={this.state.center}
+                  zoom={this.state.zoom}
+              >
+                {this.props.reports.map((marker, index) => (
+                    <Marker
+                        position={{ lat: marker.latitude, lng: marker.longitude }}
+                        key={index}
+                        onClick={() => this.handleToggleOpen(index)}
+                        name={this.props.reports.animal}>
+
+                      {
+                        this.state.isOpen && this.state.openInfoWindowMarkerId === index &&
+                        <InfoWindow
+                            key={index}
+                            onCloseClick={() => this.handleToggleClose()}>
+                          <div>
+                          <span>{marker.animal}</span>
+                          <Image size='small' src={marker.imageUrl}/>
+                          </div>
+                        </InfoWindow>
+                      }
+                    </Marker>
+                ))}
+                { /* Child components, such as markers, info windows, etc. */}
+                <></>
+              </GoogleMap>
+            </div>
+          </LoadScript>
         </div>
     );
   }
