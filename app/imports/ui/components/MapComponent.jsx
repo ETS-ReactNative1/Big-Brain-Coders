@@ -105,8 +105,8 @@ class MapComponent extends React.Component {
 
   render() {
     const containerStyle = {
-      width: '858px',
-      height: '600px',
+      width: '1450px',
+      height: '720px',
     };
     return (
         // Important! Always set the container height explicitly
