@@ -414,8 +414,8 @@ class Landing extends React.Component {
                             </Modal.Description>
                           </Modal.Content>
                           <Modal.Actions>
-                            <Button color='black' onClick={this.closeModal}>
-                              Close
+                            <Button color='linkedin' onClick={this.closeModal}>
+                              Confirm
                             </Button>
                           </Modal.Actions>
                         </Modal>

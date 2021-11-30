@@ -9,6 +9,53 @@
   opacity: 1;
 }
 
+@media screen and (max-width: 600px) {
+  .landing {
+    background: url('../images/turtle.jpeg')no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    margin: 0;
+    opacity: 1;
+    font-size: 1rem;
+  }
+  .navbar {
+    font-size: 6rem;
+  }
+  .landing-buttons {
+    margin-right: 0;
+    margin-left: 15px;
+  }
+}
+
+@media screen and (max-height: 738px) {
+  .landing {
+    background: url('../images/turtle.jpeg')no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    margin: 0;
+    opacity: 1;
+    font-size: 2rem;
+  }
+  .landing-buttons {
+    margin-left: 15px;
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 364px) {
+  .landing-buttons {
+    margin-left: 0;
+    margin-right: 0;
+    align-items: center;
+  }
+}
+
 .landing-buttons {
   margin-left: 15px;
   margin-right: 0;
