@@ -4,7 +4,6 @@
 config/settings.production.json
 app/node_modules/
 config/settings.development.json
-config/settings.json
 builds
 app/.deploy
 app/settings.json
