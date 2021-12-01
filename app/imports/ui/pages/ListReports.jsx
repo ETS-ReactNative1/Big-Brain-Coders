@@ -16,27 +16,24 @@ class ListReports extends React.Component {
   handleExportCSV = () => {
 
     const fields = ['date', 'animal', 'island', 'beachName', 'characteristics', 'behavior',
-    'numOfBeachgoers', 'name', 'phoneNumber',];
+    'numOfBeachgoers', 'name', 'phoneNumber'];
 
     const { Parser } = require('json2csv');
     const reports = Reports.find({}).fetch();
     const json2csvParser = new Parser({ fields });
     const csv = json2csvParser.parse(reports);
 
-    console.log(csv);
-
-    var downloadLink = document.createElement("a");
-    var blob = new Blob(["\ufeff", csv]);
-    var url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement('a');
+    const blob = new Blob(['\ufeff', csv]);
+    const url = URL.createObjectURL(blob);
     downloadLink.href = url;
-    downloadLink.download = "reports.csv";
+    downloadLink.download = 'reports.csv';
 
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
   }
 
-  
   /** Render the page once subscriptions have been received. */
   renderPage() {
     return (
@@ -57,7 +54,7 @@ class ListReports extends React.Component {
               {this.props.reports.map((report) => <ReportItem key={report._id} report={report} />)}
             </Table.Body>
           </Table>
-          <Button onClick={this.handleExportCSV}>Export Data</Button>
+          <Button onClick={this.handleExportCSV} style={{ marginBottom: '15px' }}>Export Data</Button>
         </Container>
     );
   }
@@ -73,7 +70,7 @@ ListReports.propTypes = {
 export default withTracker(() => {
   // Get access to Report documents.
   const subscription = Reports.subscribeReportAdmin();
-  const reports =  Reports.find({}).fetch();
+  const reports = Reports.find({}).fetch();
   return {
     reports,
     ready: subscription.ready(),
