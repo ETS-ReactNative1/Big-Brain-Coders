@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Table, Header, Loader, Button } from 'semantic-ui-react';
+import { Container, Table, Header, Loader, Button, Pagination, Icon } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import { Reports } from '../../api/report/ReportCollection';
@@ -7,6 +7,16 @@ import ReportItem from '../components/ReportItem';
 
 /** Renders a table containing all of the Report documents. Use <ReportItem> to render each row. */
 class ListReports extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activePage: 1,
+    };
+  }
+
+  handlePageChange = (e, { activePage }) => {
+    this.setState({ activePage });
+  }
 
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
@@ -36,6 +46,7 @@ class ListReports extends React.Component {
 
   /** Render the page once subscriptions have been received. */
   renderPage() {
+    const rep = Reports.find({}).fetch();
     return (
         <div className="beachbglist">
         <Container style={{ marginTop: '50px' }}>
@@ -49,13 +60,27 @@ class ListReports extends React.Component {
                 <Table.HeaderCell>Beach Name</Table.HeaderCell>
                 <Table.HeaderCell>Characteristics</Table.HeaderCell>
                 <Table.HeaderCell>Behavior</Table.HeaderCell>
+                <Table.HeaderCell>Delete</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {this.props.reports.map((report) => <ReportItem key={report._id} report={report} />)}
+              {/* eslint-disable-next-line max-len */}
+              {this.props.reports.slice((this.state.activePage - 1) * 5, this.state.activePage * 5).map((report) => <ReportItem key={report._id} report={report} />)}
             </Table.Body>
           </Table>
-          <Button inverted onClick={this.handleExportCSV} style={{ marginTop: '5px' }}>Export Data</Button>
+          <Button inverted onClick={this.handleExportCSV}
+                  style={{ marginTop: '5px', marginBottom: '15px' }}>Export Data</Button>
+          <div>
+            <Pagination
+                activePage={this.state.activePage}
+                totalPages={Math.ceil(rep.length / 5)}
+                firstItem={{ content: <Icon name='angle double left'/>, icon: true }}
+                lastItem={{ content: <Icon name='angle double right'/>, icon: true }}
+                prevItem={{ content: <Icon name='angle left'/>, icon: true }}
+                nextItem={{ content: <Icon name='angle right'/>, icon: true }}
+                onPageChange={this.handlePageChange}
+            />
+          </div>
         </Container>
         </div>
     );

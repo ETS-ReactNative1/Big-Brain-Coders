@@ -9,14 +9,14 @@
   opacity: 1;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
   .landing {
     background: url('../images/turtle.jpeg')no-repeat center center fixed;
     background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: fit-content;
+    height: 100vh;
     margin: 0;
     opacity: 1;
     font-size: 1rem;
@@ -28,6 +28,14 @@
     margin-right: 0;
     margin-left: 15px;
   }
+  .beachbgreport {
+    background: url('../images/beach.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: inherit;
+    height: 200vh;
+    opacity: 1;
+    margin-top: 170px;
+  }
 }
 
 
@@ -36,13 +44,16 @@
     background-size: cover;
     display: flex;
     height: 750px;
+    justify-content: center;
   }
 
 .beachbgreport {
   background: url('../images/beach.jpg') no-repeat center center fixed;
   background-size: cover;
+  align-items: center;
   display: flex;
-  height: 900px;
+  height: 100vh;
+  opacity: 1;
 }
 
 @media screen and (max-height: 738px) {
@@ -50,7 +61,7 @@
     background: url('../images/turtle.jpeg')no-repeat center center fixed;
     background-size: cover;
     display: flex;
-    align-items: center;
+      align-items: center;
     justify-content: center;
     height: fit-content;
     margin: 0;
@@ -60,6 +71,16 @@
   .landing-buttons {
     margin-left: 15px;
     margin-right: 0;
+  }
+}
+@media screen and (max-height: 1024px) {
+  .beachbgreport {
+    background: url('../images/beach.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: inherit;
+    height: 120vh;
+    opacity: 1;
+    margin-top: 5px;
   }
 }
 
@@ -97,3 +118,5 @@
 .filter {
   margin: 10px;
 }
+
+

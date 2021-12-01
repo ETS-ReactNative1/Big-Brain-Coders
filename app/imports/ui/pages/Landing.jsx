@@ -222,6 +222,7 @@ class Landing extends React.Component {
           <div style={{ marginTop: '20px' }}>
             <Grid verticalAlign='middle' container centered stackable>
               <Grid.Column width={14}>
+                <div>
                 <Header as="h2" textAlign="center">Submit a Report</Header>
                 <AutoForm ref={ref => {
                   fRef = ref;
@@ -285,6 +286,7 @@ class Landing extends React.Component {
                     </Grid>
                   </Segment>
                 </AutoForm>
+                </div>
               </Grid.Column>
             </Grid>
           </div>
@@ -292,10 +294,11 @@ class Landing extends React.Component {
     }
     return (
         // This is desktop view
-        <container className="beachbgreport">
+        <div className='beachbgreport'>
           <Grid verticalAlign='middle' container centered stackable>
             <Grid.Column width={14} >
               <Header as="h2" textAlign="center" inverted>Submit a Report</Header>
+              <div className='form'>
               <AutoForm ref={ref => {
                 fRef = ref;
               }} schema={formSchema} onSubmit={data => this.submitDesktop(data, fRef)}>
@@ -429,9 +432,10 @@ class Landing extends React.Component {
                   </Grid>
                 </Segment>
               </AutoForm>
+              </div>
             </Grid.Column>
           </Grid>
-        </container>
+        </div>
     );
   }
 }
