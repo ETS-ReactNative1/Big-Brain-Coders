@@ -33,7 +33,6 @@ class ReportCollection extends BaseCollection {
             },
             description: {
                 type: String,
-                optional: true,
             },
           animal: {
             type: String,
