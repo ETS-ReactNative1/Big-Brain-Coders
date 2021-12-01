@@ -141,7 +141,7 @@ class Landing extends React.Component {
     data.append('cloud_name', 'glarita');
     data.append('upload_preset', 'Big-Brain-Coders');
     Axios.post('https://api.cloudinary.com/v1_1/glarita/image/upload', data).then((res) => {
-      console.log(res.data.url);
+      // console.log(res.data.url);
       this.setState({ image: res.data.url });
       this.setState({ loader2: false });
     });
@@ -179,7 +179,7 @@ class Landing extends React.Component {
 
   shareLocation = () => {
     coords = navigator.geolocation.getCurrentPosition(success = (position) => {
-      console.log(position.coords.latitude, position.coords.longitude);
+      // console.log(position.coords.latitude, position.coords.longitude);
       this.setState({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
@@ -394,7 +394,7 @@ class Landing extends React.Component {
                                       center={this.state.center}
                                       zoom={zoom}
                                       onClick={(e) => {
-                                        console.log(e.latLng.lat(), e.latLng.lat());
+                                        // console.log(e.latLng.lat(), e.latLng.lat());
                                         this.setState({ latitude: e.latLng.lat() });
                                         this.setState({ longitude: e.latLng.lng() });
                                       }}

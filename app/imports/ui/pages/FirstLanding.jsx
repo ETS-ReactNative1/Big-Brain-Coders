@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid, Header, Image, List, ListContent, ListHeader, ListItem } from 'semantic-ui-react';
+import { Button, Grid, Header, List, ListContent, ListHeader, ListItem } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import ReportModal from '../components/ReportModal';
 
@@ -24,9 +24,7 @@ class FirstLanding extends React.Component {
     const spacing = {
       paddingTop: 0,
     };
-    const imageStyle = {
-      boxShadow: '15px',
-    };
+
     return (
         <div className="landing">
         <Grid verticalAlign='middle' stackable container>
