@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { GoogleMap, InfoWindow, LoadScript, Marker } from '@react-google-maps/api';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Dropdown, Image, Label, Menu } from 'semantic-ui-react';
+import { Dropdown, Image } from 'semantic-ui-react';
 import { Reports } from '../../api/report/ReportCollection';
 
 class MapComponent extends React.Component {
@@ -14,7 +14,7 @@ class MapComponent extends React.Component {
       filter: '',
       openInfoWindowMarkerId: '',
       isOpen: false,
-      zoom: 10,
+      zoom: 7,
       center: {
         lat: 21.45076858088362,
         lng: -158.00057723373996,
@@ -71,31 +71,27 @@ class MapComponent extends React.Component {
     return (
         // Important! Always set the container height explicitly
         <div style={{ height: '100vh', width: '100%' }}>
-          <Label>Search:</Label>
-          <input icon='search' placeholder='Search...' type="text"
-                 onChange={
-                   (event) => this.setState({ search: event.target.value })
-                 }/>
-          <Menu.Item>
+          <div className='filter'>
             <Dropdown
                 icon='filter'
                 floating
                 labeled
                 button
                 placeholder='Filter'
-                selection
                 options={MapComponent.optionsArray}
                 onChange={(e, data) => {
                   this.setState({ filter: data.value });
-                  console.log(data.value);
                 }}
             />
-          </Menu.Item>
-
+          <input icon='search' placeholder='Search...' type="text"
+                 onChange={
+                   (event) => this.setState({ search: event.target.value })
+                 }/>
+          </div>
           <LoadScript
               googleMapsApiKey={Meteor.settings.public.googleMapsKEY}
           >
-            <div>
+            <div className='map'>
               <GoogleMap
                   mapContainerStyle={containerStyle}
                   center={this.state.center}

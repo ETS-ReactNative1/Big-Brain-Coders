@@ -40,7 +40,6 @@ const formSchema = new SimpleSchema({
   },
   description: {
     type: String,
-    optional: true,
   },
   animal: {
     type: String,
