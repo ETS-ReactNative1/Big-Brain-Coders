@@ -20,6 +20,7 @@ class ReportPage extends React.Component {
     };
 
     return (
+        <div className="beachbglist">
         <Container style={{ marginTop: '100px' }}>
             <Grid relaxed stackable columns={2}>
                 <Grid.Column>
@@ -66,6 +67,7 @@ class ReportPage extends React.Component {
                 </Grid.Column>
             </Grid>
         </Container>
+        </div>
     );
   }
 }

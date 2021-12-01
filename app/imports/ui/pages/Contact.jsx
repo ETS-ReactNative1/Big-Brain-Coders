@@ -25,9 +25,11 @@ class Contact extends React.Component {
 
   render() {
     return (
+        <div className="beachbglist">
         <Container id='contact-page'>
           <Tab menu={{ fluid: true, stackable: true, tabular: true }} panes={this.panes} id='tabs'/>
         </Container>
+        </div>
     );
   }
 }

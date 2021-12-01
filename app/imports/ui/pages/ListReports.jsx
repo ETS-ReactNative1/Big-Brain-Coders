@@ -37,6 +37,7 @@ class ListReports extends React.Component {
   /** Render the page once subscriptions have been received. */
   renderPage() {
     return (
+        <div className="beachbglist">
         <Container style={{ marginTop: '50px' }}>
           <Header as="h2" textAlign="center" inverted>Reports</Header>
           <Table striped selectable singleLine>
@@ -56,6 +57,7 @@ class ListReports extends React.Component {
           </Table>
           <Button inverted onClick={this.handleExportCSV} style={{ marginTop: '5px' }}>Export Data</Button>
         </Container>
+        </div>
     );
   }
 }

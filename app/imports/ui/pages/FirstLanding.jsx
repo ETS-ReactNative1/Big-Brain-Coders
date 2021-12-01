@@ -49,7 +49,6 @@ class FirstLanding extends React.Component {
               </List>
             </Grid.Column>
             <Grid.Column computer={7}>
-              <Image src='../images/report.png' size='big' className='landing-report'/>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row centered column={2} style={spacing}>

@@ -30,6 +30,21 @@
   }
 }
 
+
+  .beachbglist {
+    background: url('../images/beach.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    height: 750px;
+  }
+
+.beachbgreport {
+  background: url('../images/beach.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  height: 900px;
+}
+
 @media screen and (max-height: 738px) {
   .landing {
     background: url('../images/turtle.jpeg')no-repeat center center fixed;

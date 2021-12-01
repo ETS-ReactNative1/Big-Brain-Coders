@@ -292,9 +292,9 @@ class Landing extends React.Component {
     }
     return (
         // This is desktop view
-        <div style={{ marginTop: '20px' }}>
+        <container className="beachbgreport">
           <Grid verticalAlign='middle' container centered stackable>
-            <Grid.Column width={14}>
+            <Grid.Column width={14} >
               <Header as="h2" textAlign="center" inverted>Submit a Report</Header>
               <AutoForm ref={ref => {
                 fRef = ref;
@@ -431,7 +431,7 @@ class Landing extends React.Component {
               </AutoForm>
             </Grid.Column>
           </Grid>
-        </div>
+        </container>
     );
   }
 }
