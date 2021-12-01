@@ -1,20 +1,21 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, NavLink } from 'react-router-dom';
 
 /** Renders a single row in the List Reports table. See pages/ListReports.jsx. */
 class ReportItem extends React.Component {
   render() {
     return (
         <Table.Row>
-          <Table.Cell>{this.props.report.date}</Table.Cell>
+          <Table.Cell >
+            <NavLink exact to={`/details/${this.props.report._id}`}>{this.props.report.date}</NavLink>
+          </Table.Cell>          
           <Table.Cell>{this.props.report.animal}</Table.Cell>
           <Table.Cell>{this.props.report.island}</Table.Cell>
           <Table.Cell>{this.props.report.beachName}</Table.Cell>
           <Table.Cell>{this.props.report.characteristics}</Table.Cell>
           <Table.Cell>{this.props.report.behavior}</Table.Cell>
-
         </Table.Row>
     );
   }
