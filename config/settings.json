@@ -1,0 +1,50 @@
+{
+  "galaxy.meteor.com": {
+    "env": {
+      "MONGO_URL": "mongodb://<dbuser>:<dbpassword>@<dbserver>:<dbport>/<dbname>"
+    }
+  },
+  "defaultAccounts": [
+    { "email": "admin@foo.com", "password": "changeme", "role": "admin" },
+    { "email": "john@hmar.com", "password": "HMARtest", "role": "admin" },
+    { "email": "john@foo.com", "password": "changeme" }
+  ],
+
+  "defaultData": [
+    { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
+    { "name": "Bicycle", "quantity": 2, "owner": "john@foo.com", "condition": "poor" },
+    { "name": "Banana", "quantity": 2, "owner": "admin@foo.com", "condition": "good" },
+    { "name": "Boogie Board", "quantity": 2, "owner": "admin@foo.com", "condition": "excellent" }
+  ],
+
+  "defaultReports": [
+    { "date": "January 17, 2021 08:42:25 UTC", "latitude": "21.330970673074834", "longitude": "-157.69216914705936", "island": "Oahu",
+      "beachName": "Waimanalo Beach", "description": "This is a beach with sand.", "animal": "Monk Seal",
+      "characteristics": "Massive scar on belly.", "behavior": "Calm", "numOfBeachgoers": 27, "name": "Glen Larita", "phoneNumber": "8083479463",
+      "imageUrl": "https://www.staradvertiser.com/wp-content/uploads/2021/06/web1_Mele-RM90-resting-on-the-beach-HMAR.jpg",
+      "owner": "john@foo.com"
+    },
+    { "date": "August 3, 2021 16:34:11 UTC", "latitude": "21.673992205544906", "longitude": "-158.0407209574379", "island": "Oahu",
+      "beachName": "Sunset Beach", "description": "This is a beach with sand and big waves.", "animal": "Sea Turtle",
+      "characteristics": "Missing a leg.", "behavior": "Anxious", "numOfBeachgoers": 13, "name": "Eric Lam", "phoneNumber": "8081234567",
+      "imageUrl": "https://thumbs.dreamstime.com/b/green-sea-turtle-tropical-beach-sunset-heading-ocean-first-time-khao-lampi-hat-thai-mueang-national-golden-sun-140357281.jpg", "owner": "john@foo.com"
+    },
+    { "date": "September 10, 2021 12:25:52 UTC", "latitude": "21.61704283996229", "longitude": "-158.08761172472322", "island": "Oahu",
+      "beachName": "Laniakea Beach", "description": "This is a beach with sand and lots of turtles.", "animal": "Sea Turtle",
+      "characteristics": "Has a shiny shell.", "behavior": "Exhausted", "numOfBeachgoers": 54, "name": "Irene Ma", "phoneNumber": "8082547645",
+      "imageUrl": "https://thumbs.dreamstime.com/b/green-sea-turtle-tropical-beach-sunset-heading-ocean-first-time-khao-lampi-hat-thai-mueang-national-golden-sun-140357281.jpg", "owner": "john@foo.com"
+    },
+    { "date": "July 2, 2021 10:23:31 UTC", "latitude": "21.398009919909203", "longitude": "-157.7266382346176", "island": "Oahu",
+      "beachName": "Kailua Beach", "description": "This is a beach with lots of sand and nice water.", "animal": "Seabird",
+      "characteristics": "Hurt wing.", "behavior": "Pained", "numOfBeachgoers": 9, "name": "Chase Lee", "phoneNumber": "8085237485",
+      "imageUrl": "https://oahunatureblog.files.wordpress.com/2016/08/albatross-2.jpg", "owner": "john@foo.com"
+    },
+    { "date": "October 31, 2021 17:15:12 UTC", "latitude": "21.303163489111334", "longitude": "-158.04568607005774", "island": "Oahu",
+      "beachName": "White Plains Beach", "description": "This is a beach with sand and water.", "animal": "Monk Seal",
+      "characteristics": "Tag on left flipper.", "behavior": "Relaxed", "numOfBeachgoers": 23, "name": "Kyra Ikeda", "phoneNumber": "8082843941",
+      "imageUrl": "https://oahunatureblog.files.wordpress.com/2016/08/albatross-2.jpg", "owner": "john@foo.com"
+    }
+  ],
+
+  "public": { "googleMaps": "AIzaSyCHqMPTtAMESa45O0vDFLrbPPahApnC2hY", "googleMapsKEY":  "AIzaSyDhBkwVGUxSvmwjOzUhxpyyT56N26kNFLE" }
+}
