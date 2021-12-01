@@ -7,4 +7,4 @@ config/settings.development.json
 config/settings.json
 builds
 app/.deploy
-app/setting.json
+app/settings.json
