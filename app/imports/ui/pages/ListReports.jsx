@@ -39,10 +39,10 @@ class ListReports extends React.Component {
     return (
         <Container style={{ marginTop: '50px' }}>
           <Header as="h2" textAlign="center" inverted>Reports</Header>
-          <Table celled>
+          <Table striped selectable singleLine>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell>Date</Table.HeaderCell>
+                <Table.HeaderCell>Date/Time</Table.HeaderCell>
                 <Table.HeaderCell>Animal</Table.HeaderCell>
                 <Table.HeaderCell>Island</Table.HeaderCell>
                 <Table.HeaderCell>Beach Name</Table.HeaderCell>
@@ -54,7 +54,7 @@ class ListReports extends React.Component {
               {this.props.reports.map((report) => <ReportItem key={report._id} report={report} />)}
             </Table.Body>
           </Table>
-          <Button onClick={this.handleExportCSV} style={{ marginBottom: '15px' }}>Export Data</Button>
+          <Button inverted onClick={this.handleExportCSV} style={{ marginTop: '5px' }}>Export Data</Button>
         </Container>
     );
   }
