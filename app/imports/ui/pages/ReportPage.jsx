@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container, Grid, Loader, Image, Table, Button } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
+import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Reports } from '../../api/report/ReportCollection';
-import { NavLink } from 'react-router-dom';
 
 /** Renders a page to view individual reports in more detail */
 class ReportPage extends React.Component {
@@ -16,8 +16,9 @@ class ReportPage extends React.Component {
   /** Render the page once subscriptions have been received. */
   renderPage() {
     const cellStyle = {
-        fontWeight: 'bold'
-    }
+        fontWeight: 'bold',
+    };
+
     return (
         <Container style={{ marginTop: '100px' }}>
             <Grid relaxed stackable columns={2}>
@@ -59,7 +60,7 @@ class ReportPage extends React.Component {
                             <Table.Cell>{this.props.report.phoneNumber}</Table.Cell>
                         </Table.Row>
                     </Table>
-                    <Button inverted as={NavLink} exact to={`/reports`}>
+                    <Button inverted as={NavLink} exact to={'/reports'}>
                         Back to all reports
                     </Button>
                 </Grid.Column>
@@ -80,7 +81,7 @@ export default withTracker(({ match }) => {
   // Get access to Report document according to the report ID.
   const reportID = match.params._id;
   const subscription = Reports.subscribeReportAdmin();
-  const report =  Reports.find({ _id: reportID }).fetch()[0];
+  const report = Reports.find({ _id: reportID }).fetch()[0];
   return {
     report,
     ready: subscription.ready(),

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import { withRouter, Link, NavLink } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 
 /** Renders a single row in the List Reports table. See pages/ListReports.jsx. */
 class ReportItem extends React.Component {
@@ -10,7 +10,7 @@ class ReportItem extends React.Component {
         <Table.Row>
           <Table.Cell >
             <NavLink exact to={`/details/${this.props.report._id}`}>{this.props.report.date}</NavLink>
-          </Table.Cell>          
+          </Table.Cell>
           <Table.Cell>{this.props.report.animal}</Table.Cell>
           <Table.Cell>{this.props.report.island}</Table.Cell>
           <Table.Cell>{this.props.report.beachName}</Table.Cell>
