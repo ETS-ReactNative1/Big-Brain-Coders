@@ -1,6 +1,6 @@
 ## How to run Coastar
 
-You can go to our deployed link located [here](https://coastar.xyz/#/)
+You can go to our deployed link located [here](https://coastar491.meteorapp.com/)
 
 To run Coastar locally, download the repo and [install Meteor](https://www.meteor.com/install).
 
